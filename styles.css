@@ -1,0 +1,35 @@
+body {
+	margin: 32px 0;
+	background-color: #000000;
+	color: #ffffff;
+}
+.content-and-main {
+
+}
+.header, .footer {
+	text-align: center;
+}
+.main-title, .sub-title, .copyright, .contact {
+	margin: 2px 0;
+}
+.main-title {
+	font-size: 20px;
+}
+.sub-title {
+	font-size: 12px;
+}
+.copyright, .contact {
+	font-size: 10px;
+}
+.main {
+	margin-top: 100px;
+	margin-left: 15%;
+	margin-right: 32px;
+}
+.item {
+	margin: 64px 0;
+	font-size: 14px;
+}
+.p {
+	margin: 8px 0;
+}
