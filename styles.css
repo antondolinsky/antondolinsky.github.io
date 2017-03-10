@@ -52,6 +52,9 @@
 	margin: 64px 0;
 	font-size: 14px;
 }
+.type-1 .footer {
+	margin-left: 15%;
+}
 .type-2 {
 	background-color: #ffffff;
 	color: #000000;
