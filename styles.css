@@ -16,7 +16,7 @@
 .main {
 	margin-top: 100px;
 	margin-left: 15%;
-	margin-right: 32px;
+	margin-right: 15%;
 }
 .main-centered {
 	margin-top: 100px;
@@ -37,6 +37,10 @@
 .type-1 a {
 	color: #ffffff;
 }
+.type-1 .nav,
+.type-1 .main {
+	margin-right: 32px;
+}
 .type-2 {
 	background-color: #ffffff;
 	color: #000000;
@@ -44,7 +48,6 @@
 .type-2 .main {
 	max-width: 900px;
 	margin-top: 32px;
-	margin-right: 15%;
 	padding-top: 32px;
 }
 .type-2 .item {
