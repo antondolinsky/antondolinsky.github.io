@@ -40,10 +40,14 @@ a {
 .p {
 	margin: 8px 0;
 }
+.content.type-2 .header {
+	display: none;
+}
 .content.type-2 .main {
 	max-width: 900px;
 	margin-top: 32px;
 	margin-right: 15%;
+	padding-top: 32px;
 }
 .content.type-2 .item {
 	font-size: 16px;
