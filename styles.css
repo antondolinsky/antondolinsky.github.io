@@ -25,12 +25,16 @@
 	margin-top: 100px;
 	text-align: center;
 }
-.item {
-	margin: 64px 0;
-	font-size: 14px;
-}
 .p {
 	margin: 8px 0;
+}
+.type-0 {
+	margin: 32px 0;
+	background-color: #000000;
+	color: #ffffff;
+}
+.type-0 a {
+	color: #ffffff;
 }
 .type-1 {
 	margin: 32px 0;
@@ -43,6 +47,10 @@
 .type-1 .nav,
 .type-1 .main {
 	margin-right: 32px;
+}
+.type-1 .item {
+	margin: 64px 0;
+	font-size: 14px;
 }
 .type-2 {
 	background-color: #ffffff;
