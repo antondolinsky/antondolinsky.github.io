@@ -41,8 +41,8 @@ a {
 	margin: 8px 0;
 }
 .type-2 {
-	background-color: #000000;
-	color: #ffffff;
+	background-color: #ffffff;
+	color: #000000;
 }
 .type-2 .header {
 	display: none;
