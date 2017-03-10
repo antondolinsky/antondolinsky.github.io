@@ -41,9 +41,6 @@
 	background-color: #ffffff;
 	color: #000000;
 }
-.type-2 .header {
-	display: none;
-}
 .type-2 .main {
 	max-width: 900px;
 	margin-top: 32px;
