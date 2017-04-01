@@ -74,3 +74,21 @@
 .type-2 .a {
 	color: black;
 }
+.type-3 {
+	background-color: #000000;
+	color: #ffffff;
+}
+.type-3 .main {
+	max-width: 900px;
+	margin-top: 32px;
+	padding-top: 32px;
+}
+.type-3 .item {
+	font-size: 16px;
+}
+.type-3 .p {
+	margin-bottom: 16px;
+}
+.type-3 .a {
+	color: black;
+}
