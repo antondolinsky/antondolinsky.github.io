@@ -1,6 +1,6 @@
 var objectbrowser = function(templates) {
 	var el = domfromstr(templates.objectbrowser)[0];
-	var items = domqsaarray('data-items', el);
+	var items = domqsaarray('data-items', el)[0];
 	var root;
 	var objectbrowser = {
 		dom: function() {
