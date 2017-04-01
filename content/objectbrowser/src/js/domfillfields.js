@@ -1,5 +1,5 @@
 var fillfields = function(root, attributename, values) {
-  qsaarray('[' + attributename + ']', root).forEach(function(element) {
+  domqsaarray('[' + attributename + ']', root).forEach(function(element) {
   	var attribute = element.getAttribute(attributename);
   	if (attribute !== null) {
 	    var value = objpath(values, attribute.split('.'));
