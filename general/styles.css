@@ -78,6 +78,9 @@
 	background-color: #000000;
 	color: #ffffff;
 }
+.type-3 .nav a {
+	color: green;
+}
 .type-3 .main {
 	max-width: 900px;
 	margin-top: 32px;
