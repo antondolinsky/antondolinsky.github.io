@@ -95,3 +95,26 @@
 .type-3 .a {
 	color: green;
 }
+
+.type-4 {
+	background-color: #000000;
+	color: #ffffff;
+}
+.type-4 .nav a {
+	color: green;
+}
+.type-4 .main {
+	max-width: 900px;
+	margin-top: 32px;
+	padding-top: 32px;
+}
+.type-4 .item {
+	margin-bottom: 78px;
+	font-size: 16px;
+}
+.type-4 .p {
+	margin-bottom: 16px;
+}
+.type-4 .a {
+	color: green;
+}
