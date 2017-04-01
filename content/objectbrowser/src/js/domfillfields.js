@@ -1,4 +1,4 @@
-var fillfields = function(root, attributename, values) {
+var domfillfields = function(root, attributename, values) {
   domqsaarray('[' + attributename + ']', root).forEach(function(element) {
   	var attribute = element.getAttribute(attributename);
   	if (attribute !== null) {
