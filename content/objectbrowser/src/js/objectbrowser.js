@@ -15,6 +15,7 @@ var objectbrowser = function(templates) {
 					key: key,
 					valuesummary: value.toString()
 				});
+				items.appendChild(item);
 			});
 		}
 	};
