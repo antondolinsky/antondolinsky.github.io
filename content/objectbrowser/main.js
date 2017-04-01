@@ -1,3 +1,11 @@
+var paths = {
+	templates: {
+		item: 'src/templates/item.html'
+	}
+};
+
 var main = function() {
-	objectbrowser();
+	getfiles(paths.templates).then(function(templates) {
+		objectbrowser(templates);
+	});
 };
