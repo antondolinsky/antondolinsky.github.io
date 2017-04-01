@@ -10,7 +10,7 @@ var objectbrowser = function(templates) {
 			root = _root;
 			domempty(items);
 			objeach(root, function(key, value) {
-				var item = domfromstr(templates.item);
+				var item = domfromstr(templates.item)[0];
 				domfillfields(item, 'data-field', {
 					key: key,
 					valuesummary: value.toString()
