@@ -7,5 +7,6 @@ var getfiles = function(paths) {
 		objeach(data, function(key, value) {
 			data[key] = value[0];
 		});
+		return data;
 	});
 };
