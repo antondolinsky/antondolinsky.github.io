@@ -5,7 +5,7 @@ var paths = {
 };
 
 var objectbrowser = function() {
-	getfile(paths.templates.item).then(function(data) {
-		console.log(data);
+	getfiles(paths.templates).then(function(templates) {
+		console.log(templates);
 	});
 };

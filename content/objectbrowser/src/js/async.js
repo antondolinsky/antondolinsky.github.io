@@ -1,5 +1,5 @@
 var async = {
-	all: function(promises, cb) {
+	all: function(promises) {
 		var args = {};
 		return (new Promise(function(resolve, reject) {
 			objeach(promises, function(key, value) {
