@@ -31,7 +31,9 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 		}
 		item.setAttribute('data-isexpanded', (! mode));
 	};
-	expandcollapse(isexpanded);
+	if (isexpandable) {
+		expandcollapse(isexpanded);
+	}
 	if (ec && isexpandable) {
 		ec.addEventListener('click', function(e) {
 			expandcollapse(item.getAttribute('data-isexpanded') === 'true');
