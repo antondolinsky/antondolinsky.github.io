@@ -29,7 +29,6 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 				ch.appendChild(item);
 			});
 		}
-		item.setAttribute('data-isexpanded', (! mode));
 	};
 	if (isexpandable) {
 		expandcollapse(isexpanded);
