@@ -7,10 +7,10 @@
 	width: 20px;
 	text-align: center;
 }
-[data-objectbrowseritem] [data-expandcollapse][data-expanded="false"]:before {
+[data-objectbrowseritem][data-expanded="false"] [data-expandcollapse]:before {
 	content: "-";
 }
-[data-objectbrowseritem] [data-expandcollapse][data-expanded="true"]:before {
+[data-objectbrowseritem][data-expanded="true"] [data-expandcollapse]:before {
 	content: "+";
 }
 [data-objectbrowseritem] [data-rest] {

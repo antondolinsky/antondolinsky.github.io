@@ -21,7 +21,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 	item.setAttribute('data-isexpandable', isexpandable);
 	item.setAttribute('data-haschildren', haschildren);
 	var expandcollapse = function(mode) {
-		ec.setAttribute('data-expanded', mode);
+		item.setAttribute('data-expanded', mode);
 		ch.style.display = (mode ? 'initial' : 'none');
 		if (mode) {
 			domempty(ch);
@@ -35,7 +35,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 	expandcollapse(expanded);
 	if (ec && isexpandable) {
 		ec.addEventListener('click', function(e) {
-			expandcollapse(ec.getAttribute('data-expanded') === 'true');
+			expandcollapse(item.getAttribute('data-expanded') === 'true');
 		});
 	}
 	return item;
