@@ -1,30 +1,33 @@
-[data-objectbrowseritem] > [data-main] > * {
-	display: inline-block;
+[data-objectbrowseritem] [data-children] {
+	margin-left: 32px;
 }
-[data-objectbrowseritem] > [data-main] > [data-expandcollapse] {
+[data-objectbrowseritem] [data-expandcollapse] {
 	position: absolute;
 	left: 0;
 	width: 20px;
 	text-align: center;
 }
-[data-objectbrowseritem] > [data-main] > [data-expandcollapse][data-expanded="false"]:before {
+[data-objectbrowseritem] [data-expandcollapse][data-expanded="false"]:before {
 	content: "-";
 }
-[data-objectbrowseritem] > [data-main] > [data-expandcollapse][data-expanded="true"]:before {
+[data-objectbrowseritem] [data-expandcollapse][data-expanded="true"]:before {
 	content: "+";
 }
-[data-objectbrowseritem] > [data-main] > [data-field="key"] {
+[data-objectbrowseritem] [data-rest] {
 	margin-left: 20px;
 }
-[data-objectbrowseritem][data-type="boolean"] > [data-main] > [data-field="key"] {
+[data-objectbrowseritem] [data-field="key"] {
+	margin-left: 20px;
+}
+[data-objectbrowseritem][data-type="boolean"] [data-field="key"] {
 	color: Purple;
 }
-[data-objectbrowseritem][data-type="number"] > [data-main] > [data-field="key"] {
+[data-objectbrowseritem][data-type="number"] [data-field="key"] {
 	color: Blue;
 }
-[data-objectbrowseritem][data-type="string"] > [data-main] > [data-field="key"] {
+[data-objectbrowseritem][data-type="string"] [data-field="key"] {
 	color: Green;
 }
-[data-objectbrowseritem][data-type="function"] > [data-main] > [data-field="key"] {
+[data-objectbrowseritem][data-type="function"] [data-field="key"] {
 	color: Red;
 }
