@@ -21,7 +21,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 	item.setAttribute('data-isexpandable', isexpandable);
 	item.setAttribute('data-isoutlinked', isoutlinked);
 	var expandcollapse = function(mode) {
-		item.setAttribute('data-expanded', mode);
+		item.setAttribute('data-isexpanded', mode);
 		ch.style.display = (mode ? 'initial' : 'none');
 		if (mode) {
 			domempty(ch);
@@ -30,7 +30,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 				ch.appendChild(item);
 			});
 		}
-		ec.setAttribute('data-isexpanded', (! mode));
+		item.setAttribute('data-isexpanded', (! mode));
 	};
 	expandcollapse(isexpanded);
 	if (ec && isexpandable) {
