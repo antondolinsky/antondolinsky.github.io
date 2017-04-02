@@ -20,7 +20,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 			ch.style.display = 'initial';
 			domempty(ch);
 			objeach(value, function(key, value) {
-				var item = objbrowseritem(templates, key, value, path);
+				var item = objbrowseritem(templates, key, value, path, false);
 				ch.appendChild(item);
 			});
 		}
@@ -46,6 +46,9 @@ var objectbrowser = function(templates) {
 		},
 		set: function(_root) {
 			root = _root;
+			var rootitem = objbrowseritem(templates, null, root, [], true);
+			domempty(items);
+			items.appendChild(rootitem);
 		}
 	};
 	return objectbrowser;
