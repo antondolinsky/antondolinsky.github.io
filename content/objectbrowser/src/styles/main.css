@@ -1,50 +1,50 @@
 [data-objectbrowseritem] {
 	cursor: default;
 }
-[data-objectbrowseritem] [data-main] {
+[data-objectbrowseritem] > [data-main] {
 	position: relative;
 }
-[data-objectbrowseritem] [data-children] {
+[data-objectbrowseritem] > [data-children] {
 	display: block;
 	margin-left: 32px;
 }
-[data-objectbrowseritem][data-isexpanded="false"] [data-children] {
+[data-objectbrowseritem][data-isexpanded="false"] > [data-children] {
 	display: none;
 }
-[data-objectbrowseritem][data-isexpanded="true"] [data-children] {
+[data-objectbrowseritem][data-isexpanded="true"] > [data-children] {
 	display: block;
 }
-[data-objectbrowseritem] [data-expandcollapse] {
+[data-objectbrowseritem] > [data-main] > [data-expandcollapse] {
 	position: absolute;
 	left: 0;
 	width: 20px;
 	text-align: center;
 	cursor: pointer;
 }
-[data-objectbrowseritem][data-isexpandable="true"][data-isexpanded="false"] [data-expandcollapse]:before {
+[data-objectbrowseritem][data-isexpandable="true"][data-isexpanded="false"] > [data-main] > [data-expandcollapse]:before {
 	content: "+";
 }
-[data-objectbrowseritem][data-isexpandable="true"][data-isexpanded="true"] [data-expandcollapse]:before {
+[data-objectbrowseritem][data-isexpandable="true"][data-isexpanded="true"] > [data-main] > [data-expandcollapse]:before {
 	content: "-";
 }
-[data-objectbrowseritem] [data-rest] {
+[data-objectbrowseritem] > [data-main] > [data-rest] {
 	margin-left: 20px;
 }
-[data-objectbrowseritem] [data-rest] > [data-field] {
+[data-objectbrowseritem] > [data-main] > [data-rest] > [data-field] {
 	display: inline-block;
 }
-[data-objectbrowseritem][data-type="boolean"] [data-field="key"] {
+[data-objectbrowseritem][data-type="boolean"] > [data-main] > [data-rest] > [data-field="key"] {
 	color: Purple;
 }
-[data-objectbrowseritem][data-type="number"] [data-field="key"] {
+[data-objectbrowseritem][data-type="number"] > [data-main] > [data-rest] > [data-field="key"] {
 	color: Blue;
 }
-[data-objectbrowseritem][data-type="string"] [data-field="key"] {
+[data-objectbrowseritem][data-type="string"] > [data-main] > [data-rest] > [data-field="key"] {
 	color: Green;
 }
-[data-objectbrowseritem][data-type="function"] [data-field="key"] {
+[data-objectbrowseritem][data-type="function"] > [data-main] > [data-rest] > [data-field="key"] {
 	color: Red;
 }
-[data-objectbrowseritem][data-type="function"] [data-field="valuesummary"] {
+[data-objectbrowseritem][data-type="function"] > [data-main] > [data-rest] > [data-field="valuesummary"] {
 	font-style: italic;
 }
