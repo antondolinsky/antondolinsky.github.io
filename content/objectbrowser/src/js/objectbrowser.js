@@ -1,8 +1,4 @@
-var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
-	var path = pathsofar.slice();
-	if (key) {
-		path.push(key);
-	}
+var objbrowseritem = function(templates, key, value, isexpanded) {
 	var type = typeof(value);
 	var specifictype = ((value instanceof Array) ? 'array' : type);
 	var isobjectorfunction = ((type === 'object') || (type === 'function'));
@@ -18,7 +14,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 		valuesummary: valuesummary
 	});
 	domsetattributes(item, {
-		'data-path': path.join('.'),
+		'data-key': key,
 		'data-type': type,
 		'data-specifictype': specifictype,
 		'data-isobjectorfunction': isobjectorfunction,
@@ -30,7 +26,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 		if (mode) {
 			domempty(ch);
 			objeach(value, function(key, value) {
-				var item = objbrowseritem(templates, key, value, path, false);
+				var item = objbrowseritem(templates, key, value, false);
 				ch.appendChild(item);
 			});
 		}
@@ -54,7 +50,7 @@ var objectbrowser = function(templates) {
 		},
 		set: function(_root) {
 			root = _root;
-			var rootitem = objbrowseritem(templates, null, root, [], true);
+			var rootitem = objbrowseritem(templates, null, root, true);
 			domempty(items);
 			items.appendChild(domqsaarray('[data-children]', rootitem)[0]);
 		}
