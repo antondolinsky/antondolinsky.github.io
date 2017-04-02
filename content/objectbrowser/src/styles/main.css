@@ -16,6 +16,9 @@
 [data-objectbrowseritem] [data-rest] {
 	margin-left: 20px;
 }
+[data-objectbrowseritem] [data-rest] > [data-field] {
+	display: inline-block;
+}
 [data-objectbrowseritem] [data-field="key"] {
 	margin-left: 20px;
 }
