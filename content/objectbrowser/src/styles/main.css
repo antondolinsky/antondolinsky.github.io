@@ -5,11 +5,12 @@
 	position: absolute;
 	left: 0;
 	width: 20px;
+	text-align: center;
 }
-[data-objectbrowseritem] > [data-main] > [data-expandcollapse="false"] {
+[data-objectbrowseritem] > [data-main] > [data-expandcollapse="false"]:before {
 	content: "-";
 }
-[data-objectbrowseritem] > [data-main] > [data-expandcollapse="true"] {
+[data-objectbrowseritem] > [data-main] > [data-expandcollapse="true"]:before {
 	content: "+";
 }
 [data-objectbrowseritem] > [data-main] > [data-field="key"] {
