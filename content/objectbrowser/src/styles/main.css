@@ -1,0 +1,17 @@
+[data-objectbrowseritem] > [data-main] > * {
+	display: inline-block;
+}
+[data-objectbrowseritem] > [data-main] > [data-expandcollapse] {
+	position: absolute;
+	left: 0;
+	width: 20px;
+}
+[data-objectbrowseritem] > [data-main] > [data-expandcollapse="false"] {
+	content: "-";
+}
+[data-objectbrowseritem] > [data-main] > [data-expandcollapse="true"] {
+	content: "+";
+}
+[data-objectbrowseritem] > [data-main] > [data-field="key"] {
+	margin-left: 20px;
+}
