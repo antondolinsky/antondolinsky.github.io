@@ -1,7 +1,11 @@
+[data-objectbrowseritem] {
+	cursor: default;
+}
 [data-objectbrowseritem] [data-main] {
 	position: relative;
 }
 [data-objectbrowseritem] [data-children] {
+	display: block;
 	margin-left: 32px;
 }
 [data-objectbrowseritem] [data-expandcollapse] {
@@ -9,6 +13,7 @@
 	left: 0;
 	width: 20px;
 	text-align: center;
+	cursor: pointer;
 }
 [data-objectbrowseritem][data-isexpanded="false"] [data-expandcollapse]:before {
 	content: "-";
