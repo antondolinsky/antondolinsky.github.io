@@ -21,10 +21,10 @@
 	text-align: center;
 	cursor: pointer;
 }
-[data-objectbrowseritem][data-isexpanded="false"] [data-expandcollapse]:before {
+[data-objectbrowseritem][data-isexpandable="true"][data-isexpanded="false"] [data-expandcollapse]:before {
 	content: "+";
 }
-[data-objectbrowseritem][data-isexpanded="true"] [data-expandcollapse]:before {
+[data-objectbrowseritem][data-isexpandable="true"][data-isexpanded="true"] [data-expandcollapse]:before {
 	content: "-";
 }
 [data-objectbrowseritem] [data-rest] {
