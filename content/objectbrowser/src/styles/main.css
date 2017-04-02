@@ -1,3 +1,6 @@
+[data-objectbrowseritem] [data-main] {
+	position: relative;
+}
 [data-objectbrowseritem] [data-children] {
 	margin-left: 32px;
 }
