@@ -22,10 +22,10 @@
 	cursor: pointer;
 }
 [data-objectbrowseritem][data-isexpanded="false"] [data-expandcollapse]:before {
-	content: "-";
+	content: "+";
 }
 [data-objectbrowseritem][data-isexpanded="true"] [data-expandcollapse]:before {
-	content: "+";
+	content: "-";
 }
 [data-objectbrowseritem] [data-rest] {
 	margin-left: 20px;
