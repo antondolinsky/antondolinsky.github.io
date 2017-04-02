@@ -15,3 +15,15 @@
 [data-objectbrowseritem] > [data-main] > [data-field="key"] {
 	margin-left: 20px;
 }
+[data-objectbrowseritem][data-type="boolean"] > [data-main] > [data-field="key"] {
+	color: Purple;
+}
+[data-objectbrowseritem][data-type="number"] > [data-main] > [data-field="key"] {
+	color: Blue;
+}
+[data-objectbrowseritem][data-type="string"] > [data-main] > [data-field="key"] {
+	color: Green;
+}
+[data-objectbrowseritem][data-type="function"] > [data-main] > [data-field="key"] {
+	color: Red;
+}

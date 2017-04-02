@@ -1,16 +1,21 @@
 var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 	var path = pathsofar.slice();
 	path.push(key);
+	var type = typeof(value);
+	var isobjectorfunction = (type === 'object' || type === 'function');
+	var isexpandable = isobjectorfunction;
+	var haschildren = (isexpandable && (Object.keys(value).length > 0));
+	var valuesummary = ((type === 'object') ? null :
+		((type === 'function') ? 'function' : value.toString()));
 	var item = domfromstr(templates.item)[0];
 	var ec = domqsaarray('[data-expandcollapse]', item)[0];
 	var ch = domqsaarray('[data-children]', item)[0];
 	domfillfields(item, 'data-field', {
 		key: key,
-		valuesummary: value.toString()
+		valuesummary: valuesummary
 	});
 	item.setAttribute('data-path', path.join('.'));
-	var isexpandable = (value instanceof Object);
-	var haschildren = (isexpandable && (Object.keys(value).length > 0));
+	item.setAttribute('data-type', type);
 	item.setAttribute('data-isexpandable', isexpandable);
 	item.setAttribute('data-haschildren', haschildren);
 	var expandcollapse = function(mode) {
