@@ -7,7 +7,13 @@ var paths = {
 
 var testval = {
 	a: 'hello',
-	b: 3
+	b: 3,
+	c: {
+		x: true,
+		y: function(a, b) {
+			return (a + b);
+		}
+	}
 };
 
 var main = function() {
