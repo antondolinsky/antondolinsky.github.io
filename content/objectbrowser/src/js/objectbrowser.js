@@ -4,7 +4,8 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 		path.push(key);
 	}
 	var type = typeof(value);
-	var isobjectorfunction = (type === 'object' || type === 'function');
+	var specifictype = ((value instanceof Array) ? 'array' : type);
+	var isobjectorfunction = ((type === 'object') || (type === 'function'));
 	var isexpandable = isobjectorfunction;
 	var isoutlinked = (isexpandable && (Object.keys(value).length > 0));
 	var valuesummary = ((type === 'object') ? null :
@@ -16,10 +17,14 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 		key: key,
 		valuesummary: valuesummary
 	});
-	item.setAttribute('data-path', path.join('.'));
-	item.setAttribute('data-type', type);
-	item.setAttribute('data-isexpandable', isexpandable);
-	item.setAttribute('data-isoutlinked', isoutlinked);
+	domsetattributes(item, {
+		'data-path': path.join('.'),
+		'data-type': type,
+		'data-specifictype': specifictype,
+		'data-isobjectorfunction': isobjectorfunction,
+		'data-isexpandable': isexpandable,
+		'data-isoutlinked': isoutlinked
+	});
 	var expandcollapse = function(mode) {
 		item.setAttribute('data-isexpanded', mode);
 		if (mode) {
