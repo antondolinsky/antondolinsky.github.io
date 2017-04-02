@@ -1,6 +1,8 @@
 var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 	var path = pathsofar.slice();
-	path.push(key);
+	if (key) {
+		path.push(key);
+	}
 	var type = typeof(value);
 	var isobjectorfunction = (type === 'object' || type === 'function');
 	var isexpandable = isobjectorfunction;
