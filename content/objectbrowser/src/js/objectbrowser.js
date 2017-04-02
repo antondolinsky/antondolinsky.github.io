@@ -22,7 +22,6 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 	item.setAttribute('data-isoutlinked', isoutlinked);
 	var expandcollapse = function(mode) {
 		item.setAttribute('data-isexpanded', mode);
-		ch.style.display = (mode ? 'initial' : 'none');
 		if (mode) {
 			domempty(ch);
 			objeach(value, function(key, value) {

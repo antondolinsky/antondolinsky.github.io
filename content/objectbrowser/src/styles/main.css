@@ -8,6 +8,12 @@
 	display: block;
 	margin-left: 32px;
 }
+[data-objectbrowseritem][data-isexpanded="false"] [data-children] {
+	display: none;
+}
+[data-objectbrowseritem][data-isexpanded="true"] [data-children] {
+	display: block;
+}
 [data-objectbrowseritem] [data-expandcollapse] {
 	position: absolute;
 	left: 0;
