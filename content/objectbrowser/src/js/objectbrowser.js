@@ -53,7 +53,7 @@ var objectbrowser = function(templates) {
 			root = _root;
 			var rootitem = objbrowseritem(templates, null, root, [], true);
 			domempty(items);
-			items.appendChild(rootitem);
+			items.appendChild(domqsaarray('[data-children]', rootitem)[0]);
 		}
 	};
 	return objectbrowser;
