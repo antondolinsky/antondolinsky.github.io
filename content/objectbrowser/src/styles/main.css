@@ -45,3 +45,6 @@
 [data-objectbrowseritem][data-type="function"] [data-field="key"] {
 	color: Red;
 }
+[data-objectbrowseritem][data-type="function"] [data-field="valuesummary"] {
+	font-style: italic;
+}

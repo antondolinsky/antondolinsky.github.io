@@ -12,6 +12,11 @@ var testval = {
 		x: true,
 		y: function(a, b) {
 			return (a + b);
+		},
+		z: {
+			somekey: 'somevalue',
+			someotherkey: 'someothervalue',
+			array: [2, 3, 4]
 		}
 	}
 };
