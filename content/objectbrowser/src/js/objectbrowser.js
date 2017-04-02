@@ -1,4 +1,4 @@
-var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
+var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 	var path = pathsofar.slice();
 	if (key) {
 		path.push(key);
@@ -6,7 +6,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 	var type = typeof(value);
 	var isobjectorfunction = (type === 'object' || type === 'function');
 	var isexpandable = isobjectorfunction;
-	var haschildren = (isexpandable && (Object.keys(value).length > 0));
+	var isoutlinked = (isexpandable && (Object.keys(value).length > 0));
 	var valuesummary = ((type === 'object') ? null :
 		((type === 'function') ? 'function' : value.toString()));
 	var item = domfromstr(templates.item)[0];
@@ -19,7 +19,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 	item.setAttribute('data-path', path.join('.'));
 	item.setAttribute('data-type', type);
 	item.setAttribute('data-isexpandable', isexpandable);
-	item.setAttribute('data-haschildren', haschildren);
+	item.setAttribute('data-isoutlinked', isoutlinked);
 	var expandcollapse = function(mode) {
 		item.setAttribute('data-expanded', mode);
 		ch.style.display = (mode ? 'initial' : 'none');
@@ -30,12 +30,12 @@ var objbrowseritem = function(templates, key, value, pathsofar, expanded) {
 				ch.appendChild(item);
 			});
 		}
-		ec.setAttribute('data-expanded', (! mode));
+		ec.setAttribute('data-isexpanded', (! mode));
 	};
-	expandcollapse(expanded);
+	expandcollapse(isexpanded);
 	if (ec && isexpandable) {
 		ec.addEventListener('click', function(e) {
-			expandcollapse(item.getAttribute('data-expanded') === 'true');
+			expandcollapse(item.getAttribute('data-isexpanded') === 'true');
 		});
 	}
 	return item;

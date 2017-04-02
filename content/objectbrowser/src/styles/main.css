@@ -10,10 +10,10 @@
 	width: 20px;
 	text-align: center;
 }
-[data-objectbrowseritem][data-expanded="false"] [data-expandcollapse]:before {
+[data-objectbrowseritem][data-isexpanded="false"] [data-expandcollapse]:before {
 	content: "-";
 }
-[data-objectbrowseritem][data-expanded="true"] [data-expandcollapse]:before {
+[data-objectbrowseritem][data-isexpanded="true"] [data-expandcollapse]:before {
 	content: "+";
 }
 [data-objectbrowseritem] [data-rest] {
