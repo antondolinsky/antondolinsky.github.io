@@ -33,7 +33,7 @@ var objbrowseritem = function(templates, key, value, pathsofar, isexpanded) {
 	if (isexpandable) {
 		expandcollapse(isexpanded);
 		ec.addEventListener('click', function(e) {
-			expandcollapse(item.getAttribute('data-isexpanded') === 'true');
+			expandcollapse(item.getAttribute('data-isexpanded') !== 'true');
 		});
 	}
 	return item;
