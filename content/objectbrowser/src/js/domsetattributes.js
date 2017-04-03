@@ -1,5 +1,5 @@
-var domsetattributes = function(el, values) {
+var domsetattributes = function($element, values) {
 	objeach(values, function(key, value) {
-		el.setAttribute(key, value);
+		$element.setAttribute(key, value);
 	});
 };

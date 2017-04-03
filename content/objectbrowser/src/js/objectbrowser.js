@@ -6,14 +6,14 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 	var isoutlinked = (isexpandable && (Object.keys(value).length > 0));
 	var valuesummary = ((type === 'object') ? null :
 		((type === 'function') ? 'function' : value.toString()));
-	var item = domfromstr(templates.item)[0];
-	var ec = domqsaarray('[data-expandcollapse]', item)[0];
-	var ch = domqsaarray('[data-children]', item)[0];
-	domfillfields(item, 'data-field', {
+	var $item = domfromstr(templates.item)[0];
+	var $ec = domqsaarray('[data-expandcollapse]', $item)[0];
+	var $ch = domqsaarray('[data-children]', $item)[0];
+	domfillfields($item, 'data-field', {
 		key: key,
 		valuesummary: valuesummary
 	});
-	domsetattributes(item, {
+	domsetattributes($item, {
 		'data-key': key,
 		'data-type': type,
 		'data-specifictype': specifictype,
@@ -22,37 +22,43 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 		'data-isoutlinked': isoutlinked
 	});
 	var expandcollapse = function(mode) {
-		item.setAttribute('data-isexpanded', mode);
+		$item.setAttribute('data-isexpanded', mode);
 		if (mode) {
-			domempty(ch);
+			domempty($ch);
 			objeach(value, function(key, value) {
-				var item = objbrowseritem(templates, key, value, false);
-				ch.appendChild(item);
+				var $item = objbrowseritem(templates, key, value, false);
+				$ch.appendChild($item);
 			});
 		}
 	};
 	if (isexpandable) {
 		expandcollapse(isexpanded);
-		ec.addEventListener('click', function(e) {
-			expandcollapse(item.getAttribute('data-isexpanded') !== 'true');
+		$ec.addEventListener('click', function(e) {
+			expandcollapse($item.getAttribute('data-isexpanded') !== 'true');
 		});
 	}
-	return item;
+	return $item;
 };
 
 var objectbrowser = function(templates) {
-	var el = domfromstr(templates.objectbrowser)[0];
-	var items = domqsaarray('[data-items]', el)[0];
+	var $element = domfromstr(templates.objectbrowser)[0];
+	var $items = domqsaarray('[data-items]', $element)[0];
 	var root;
+	var history = [];
 	var objectbrowser = {
 		dom: function() {
-			return el;
+			return $element;
+		},
+		clearhistory: function() {
+			history = [];
+			if (root) { history.push(root); }
 		},
 		set: function(_root) {
 			root = _root;
-			var rootitem = objbrowseritem(templates, null, root, true);
-			domempty(items);
-			items.appendChild(domqsaarray('[data-children]', rootitem)[0]);
+			history.push(root);
+			var $rootitem = objbrowseritem(templates, null, root, true);
+			domempty($items);
+			$items.appendChild(domqsaarray('[data-children]', $rootitem)[0]);
 		}
 	};
 	return objectbrowser;
