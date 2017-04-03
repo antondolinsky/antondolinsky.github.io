@@ -2,8 +2,8 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 	var type = typeof(value);
 	var specifictype = ((value instanceof Array) ? 'array' : type);
 	var isobjectorfunction = ((type === 'object') || (type === 'function'));
-	var isexpandable = isobjectorfunction;
-	var isoutlinked = (isexpandable && (Object.keys(value).length > 0));
+	var isoutlinked = (Object.keys(value).length > 0);
+	var isexpandable = isoutlinked;
 	var valuesummary = ((type === 'object') ? null :
 		((type === 'function') ? 'function' : value.toString()));
 	var $item = domfromstr(templates.item)[0];
