@@ -2,8 +2,7 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 	var type = typeof(value);
 	var specifictype = ((value instanceof Array) ? 'array' : type);
 	var isobjectorfunction = ((type === 'object') || (type === 'function'));
-	var isoutlinked = (Object.keys(value).length > 0);
-	var isexpandable = isoutlinked;
+	var isoutlinked = (isobjectorfunction && (Object.keys(value).length > 0));
 	var valuesummary = ((type === 'object') ? null :
 		((type === 'function') ? 'function' : value.toString()));
 	var $item = domfromstr(templates.item)[0];
@@ -17,8 +16,6 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 		'data-key': key,
 		'data-type': type,
 		'data-specifictype': specifictype,
-		'data-isobjectorfunction': isobjectorfunction,
-		'data-isexpandable': isexpandable,
 		'data-isoutlinked': isoutlinked
 	});
 	var expandcollapse = function(mode) {
@@ -31,7 +28,7 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 			});
 		}
 	};
-	if (isexpandable) {
+	if (isoutlinked) {
 		expandcollapse(isexpanded);
 		$ec.addEventListener('click', function(e) {
 			expandcollapse($item.getAttribute('data-isexpanded') !== 'true');
