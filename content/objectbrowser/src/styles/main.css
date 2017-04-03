@@ -1,55 +1,55 @@
-[data-objectbrowseritem] {
+[data-eltype-objectbrowseritem] {
 	cursor: default;
 }
-[data-objectbrowseritem] > [data-main] {
+[data-eltype-objectbrowseritem] > [data-eltype-main] {
 	position: relative;
 }
-[data-objectbrowseritem][data-selected="true"] > [data-main] > [data-rest] {
+[data-eltype-objectbrowseritem][data-prop-selected="true"] > [data-eltype-main] > [data-eltype-rest] {
 	background-color: LightBlue;
 }
-[data-objectbrowseritem] > [data-children] {
+[data-eltype-objectbrowseritem] > [data-eltype-children] {
 	display: block;
 	margin-left: 32px;
 }
-[data-objectbrowseritem][data-isexpanded="false"] > [data-children] {
+[data-eltype-objectbrowseritem][data-prop-isexpanded="false"] > [data-eltype-children] {
 	display: none;
 }
-[data-objectbrowseritem][data-isexpanded="true"] > [data-children] {
+[data-eltype-objectbrowseritem][data-prop-isexpanded="true"] > [data-eltype-children] {
 	display: block;
 }
-[data-objectbrowseritem] > [data-main] > [data-expandcollapse] {
+[data-eltype-objectbrowseritem] > [data-eltype-main] > [data-eltype-expandcollapse] {
 	position: absolute;
 	left: 0;
 	width: 20px;
 	text-align: center;
 	cursor: pointer;
 }
-[data-objectbrowseritem][data-isoutlinked="true"][data-isexpanded="false"] > [data-main] > [data-expandcollapse]:before {
+[data-eltype-objectbrowseritem][data-prop-isoutlinked="true"][data-prop-isexpanded="false"] > [data-eltype-main] > [data-eltype-expandcollapse]:before {
 	content: "+";
 }
-[data-objectbrowseritem][data-isoutlinked="true"][data-isexpanded="true"] > [data-main] > [data-expandcollapse]:before {
+[data-eltype-objectbrowseritem][data-prop-isoutlinked="true"][data-prop-isexpanded="true"] > [data-eltype-main] > [data-eltype-expandcollapse]:before {
 	content: "-";
 }
-[data-objectbrowseritem] > [data-main] > [data-rest] {
+[data-eltype-objectbrowseritem] > [data-eltype-main] > [data-eltype-rest] {
 	display: inline-block;
 	margin-left: 20px;
 	cursor: pointer;
 }
-[data-objectbrowseritem] > [data-main] > [data-rest] > [data-field] {
+[data-eltype-objectbrowseritem] > [data-eltype-main] > [data-eltype-rest] > [data-field] {
 	display: inline-block;
 }
-[data-objectbrowseritem][data-type="boolean"] > [data-main] > [data-rest] > [data-field="key"] {
+[data-eltype-objectbrowseritem][data-prop-type="boolean"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
 	color: Purple;
 }
-[data-objectbrowseritem][data-type="number"] > [data-main] > [data-rest] > [data-field="key"] {
+[data-eltype-objectbrowseritem][data-prop-type="number"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
 	color: Blue;
 }
-[data-objectbrowseritem][data-type="string"] > [data-main] > [data-rest] > [data-field="key"] {
+[data-eltype-objectbrowseritem][data-prop-type="string"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
 	color: Green;
 }
-[data-objectbrowseritem][data-type="function"] > [data-main] > [data-rest] > [data-field="key"] {
+[data-eltype-objectbrowseritem][data-prop-type="function"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
 	color: Red;
 }
-[data-objectbrowseritem][data-type="function"] > [data-main] > [data-rest] > [data-field="valuesummary"] {
+[data-eltype-objectbrowseritem][data-prop-type="function"] > [data-eltype-main] > [data-eltype-rest] > [data-field="valuesummary"] {
 	font-style: italic;
 }
