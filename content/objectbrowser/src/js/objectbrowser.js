@@ -16,17 +16,18 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 		'data-key': key,
 		'data-type': type,
 		'data-specifictype': specifictype,
-		'data-isoutlinked': isoutlinked
+		'data-isoutlinked': isoutlinked,
+		'data-hasbeenexpanded': false
 	});
 	var expandcollapse = function(mode) {
-		if (! $item.getAttribute('data-hasbeenexpanded')) {
-			objeach(value, function(key, value) {
-				var $item = objbrowseritem(templates, key, value, false);
-				$ch.appendChild($item);
-			});
-		}
 		if (mode) {
-			$item.setAttribute('data-hasbeenexpanded', true);
+			if ($item.getAttribute('data-hasbeenexpanded') === 'false') {
+				objeach(value, function(key, value) {
+					var $item = objbrowseritem(templates, key, value, false);
+					$ch.appendChild($item);
+				});
+				$item.setAttribute('data-hasbeenexpanded', true);
+			}
 		}
 		$item.setAttribute('data-isexpanded', mode);
 	};
