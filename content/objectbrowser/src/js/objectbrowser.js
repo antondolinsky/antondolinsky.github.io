@@ -77,7 +77,7 @@ var objectbrowser = function(templates) {
 	};
 	var eventscontroller = function(type, args) {
 		if (listeners.hasOwnProperty(type)) {
-			listeners.type.forEach(function(cb) {
+			listeners[type].forEach(function(cb) {
 				cb.apply(null, args);
 			});
 		}
