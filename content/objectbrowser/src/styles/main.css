@@ -7,9 +7,6 @@
 [data-objectbrowseritem][data-selected="true"] > [data-main] > [data-rest] {
 	background-color: LightBlue;
 }
-[data-objectbrowseritem] > [data-main]:hover > [data-rest] {
-	background-color: LightGray;
-}
 [data-objectbrowseritem] > [data-children] {
 	display: block;
 	margin-left: 32px;
@@ -36,6 +33,7 @@
 [data-objectbrowseritem] > [data-main] > [data-rest] {
 	display: inline-block;
 	margin-left: 20px;
+	cursor: pointer;
 }
 [data-objectbrowseritem] > [data-main] > [data-rest] > [data-field] {
 	display: inline-block;
