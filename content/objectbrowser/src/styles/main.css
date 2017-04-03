@@ -1,6 +1,12 @@
 [data-objectbrowseritem] {
 	cursor: default;
 }
+[data-objectbrowseritem]:hover {
+	background-color: LightGray;
+}
+[data-objectbrowseritem][data-selected="true"] {
+	background-color: LightBlue;
+}
 [data-objectbrowseritem] > [data-main] {
 	position: relative;
 }

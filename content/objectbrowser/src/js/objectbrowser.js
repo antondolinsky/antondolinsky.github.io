@@ -17,7 +17,8 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 		'data-type': type,
 		'data-specifictype': specifictype,
 		'data-isoutlinked': isoutlinked,
-		'data-hasbeenexpanded': false
+		'data-hasbeenexpanded': false,
+		'data-selected': false
 	});
 	var expandcollapse = function(mode) {
 		if (mode) {
