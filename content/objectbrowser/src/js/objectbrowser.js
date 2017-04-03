@@ -19,14 +19,16 @@ var objbrowseritem = function(templates, key, value, isexpanded) {
 		'data-isoutlinked': isoutlinked
 	});
 	var expandcollapse = function(mode) {
-		$item.setAttribute('data-isexpanded', mode);
-		if (mode) {
-			domempty($ch);
+		if (! $item.getAttribute('data-hasbeenexpanded')) {
 			objeach(value, function(key, value) {
 				var $item = objbrowseritem(templates, key, value, false);
 				$ch.appendChild($item);
 			});
 		}
+		if (mode) {
+			$item.setAttribute('data-hasbeenexpanded', true);
+		}
+		$item.setAttribute('data-isexpanded', mode);
 	};
 	if (isoutlinked) {
 		expandcollapse(isexpanded);
