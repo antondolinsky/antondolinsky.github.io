@@ -4,10 +4,10 @@
 [data-objectbrowseritem] > [data-main] {
 	position: relative;
 }
-[data-objectbrowseritem][data-selected="true"] > [data-main] {
+[data-objectbrowseritem][data-selected="true"] > [data-main] > [data-rest] {
 	background-color: LightBlue;
 }
-[data-objectbrowseritem] > [data-main]:hover {
+[data-objectbrowseritem] > [data-main]:hover > [data-rest] {
 	background-color: LightGray;
 }
 [data-objectbrowseritem] > [data-children] {
@@ -34,6 +34,7 @@
 	content: "-";
 }
 [data-objectbrowseritem] > [data-main] > [data-rest] {
+	display: inline-block;
 	margin-left: 20px;
 }
 [data-objectbrowseritem] > [data-main] > [data-rest] > [data-field] {
