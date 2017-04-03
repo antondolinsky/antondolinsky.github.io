@@ -9,7 +9,7 @@ var objbrowseritem = function(templates, key, value, isexpanded, eventscontrolle
 	var $ch = domqsaarray('[data-eltype-children]', $item)[0];
 	var triggers = domqsaarray('[data-trigger]', $item).reduce(function(sofar, curr) {
 		var key = curr.getAttribute('data-trigger');
-		sofar[key] = curr;
+		sofar['$' + key] = curr;
 		return sofar;
 	}, {});
 	domfillfields($item, 'data-field', {
