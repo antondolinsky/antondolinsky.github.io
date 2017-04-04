@@ -1,0 +1,55 @@
+[data-eltype-objectbrowseritem] {
+	cursor: default;
+}
+[data-eltype-objectbrowseritem] > [data-eltype-main] {
+	position: relative;
+}
+[data-eltype-objectbrowseritem][data-prop-selected="true"] > [data-eltype-main] > [data-eltype-rest] {
+	background-color: LightBlue;
+}
+[data-eltype-objectbrowseritem] > [data-eltype-children] {
+	display: block;
+	margin-left: 32px;
+}
+[data-eltype-objectbrowseritem][data-prop-isexpanded="false"] > [data-eltype-children] {
+	display: none;
+}
+[data-eltype-objectbrowseritem][data-prop-isexpanded="true"] > [data-eltype-children] {
+	display: block;
+}
+[data-eltype-objectbrowseritem] > [data-eltype-main] > [data-eltype-expandcollapse] {
+	position: absolute;
+	left: 0;
+	width: 20px;
+	text-align: center;
+	cursor: pointer;
+}
+[data-eltype-objectbrowseritem][data-prop-isoutlinked="true"][data-prop-isexpanded="false"] > [data-eltype-main] > [data-eltype-expandcollapse]:before {
+	content: "+";
+}
+[data-eltype-objectbrowseritem][data-prop-isoutlinked="true"][data-prop-isexpanded="true"] > [data-eltype-main] > [data-eltype-expandcollapse]:before {
+	content: "-";
+}
+[data-eltype-objectbrowseritem] > [data-eltype-main] > [data-eltype-rest] {
+	display: inline-block;
+	margin-left: 20px;
+	cursor: pointer;
+}
+[data-eltype-objectbrowseritem] > [data-eltype-main] > [data-eltype-rest] > [data-field] {
+	display: inline-block;
+}
+[data-eltype-objectbrowseritem][data-prop-type="boolean"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
+	color: Purple;
+}
+[data-eltype-objectbrowseritem][data-prop-type="number"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
+	color: Blue;
+}
+[data-eltype-objectbrowseritem][data-prop-type="string"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
+	color: Green;
+}
+[data-eltype-objectbrowseritem][data-prop-type="function"] > [data-eltype-main] > [data-eltype-rest] > [data-field="key"] {
+	color: Red;
+}
+[data-eltype-objectbrowseritem][data-prop-type="function"] > [data-eltype-main] > [data-eltype-rest] > [data-field="valuesummary"] {
+	font-style: italic;
+}
