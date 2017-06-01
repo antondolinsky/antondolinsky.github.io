@@ -61,7 +61,7 @@
           if (! promise) {
             promise = new Promise(function(next) {
               next();
-            })
+            });
           }
           return new Proxy({}, {
             get: function(state, key, proxy) {
@@ -108,7 +108,7 @@
           if (! promise) {
             promise = new Promise(function(next) {
               next();
-            })
+            });
           }
           return new Proxy({}, {
             get: function(state, key, proxy) {
@@ -217,7 +217,7 @@
           if (! promise) {
             promise = new Promise(function(next) {
               next();
-            })
+            });
           }
           return new Proxy({}, {
             get: function(state, key, proxy) {
