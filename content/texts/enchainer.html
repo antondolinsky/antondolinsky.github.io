@@ -49,8 +49,8 @@
       <p class="code-light">promise.then(function() { ... }).then(function() { ... }).then(function() { ... })</p>
       <p>... and so on. We can continue to add new calls to <i>then</i> as much as necessary. But if we want to chain promises like this, we have to always use <i>then</i> as the function call, and we always have to pass in a function to <i>then</i>, and we have to return a new Promise each time from <i>then</i>.</p>
       <p>It would be convenient if we could chain arbitrary function calls, pass in arbitrary arguments, and ensure that the chained functions could each do asynchronous execution, with the next function in the chain only running when the previous ones had completed.</p>
-      <p>It would be nice, in other words, to be able to do the following:</p>
-      <p class="code-light">makechain().someFuncThatDoesAsyncStuff(...some args...).someOtherFuncThatDoesAsyncStuff(...some args...).thirdFunc(...some args...)</p>
+      <p>It would be nice, in other words, to be able to do something like the following:</p>
+      <p class="code-light">makechain(...).someFuncThatDoesAsyncStuff(...some args...).someOtherFuncThatDoesAsyncStuff(...some args...).thirdFunc(...some args...)</p>
       <p>... and so on.</p>
       <p>The following code aims to achieve this by wrapping a Promise in an interface that returns a Proxy. (So, of course, a Promise and Proxy-supporting JS environment is required.)
     </div>
