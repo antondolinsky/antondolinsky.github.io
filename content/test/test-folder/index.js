@@ -2,4 +2,4 @@ const onload = function() {
 	alert('in onload');
 };
 
-export onload;
+export { onload };
