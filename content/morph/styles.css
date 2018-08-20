@@ -1,0 +1,95 @@
+body {
+	background-color: #fff;
+}
+
+.area {
+	text-align: center;
+}
+
+.area-top {
+	font-size: 12px;
+	margin-bottom: 8px;
+}
+
+.editor-pane {
+	margin: 0 auto;
+}
+
+canvas {
+	border: 1px solid #000;
+}
+
+button {
+	cursor: pointer;
+}
+
+.area-control > button {
+	width: 60px;
+}
+
+.editor-pane {
+	position: relative;
+	width: 800px;
+	height: 400px;
+}
+
+.editor-pane-tabs {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.editor-pane-tabs-tab {
+	display: inline-block;
+	position: relative;
+	width: 40px;
+	height: 20px;
+	border: 1px solid #000;
+	border-radius: 5px 5px 0 0;
+	text-align: center;
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+.editor-pane-tabs-tab.top {
+	background-color: #fff;
+}
+
+.editor-pane-tabs-tab.top:after {
+	content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  height: 1px;
+  background-color: #fff;
+  width: 40px;
+}
+
+.editor-pane-tabs-tab a {
+	text-decoration: none;
+	color: #000;
+}
+
+.editor-pane-controls {
+	position: absolute;
+	right: -2px;
+	top: 0;
+}
+
+.editor-pane-editors {
+	padding-top: 21px;
+}
+
+.editor-pane-editors-editor {
+	display: none;
+	padding: 0;
+	border: 1px solid #000;
+	resize: none;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+}
+
+.editor-pane-editors-editor.top {
+	display: block;
+}
