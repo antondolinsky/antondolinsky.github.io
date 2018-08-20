@@ -14,14 +14,16 @@ const conf = {
 			max: 40
 		},
 		instructionChances: {
-			getData: 20,
-			putData: 20,
-			reference: 70,
-			const: 0,
-			rand: 20,
+			getData: 0,
+			putData: 0,
+			reference: 120,
+			const: 10,
+			rand: 30,
 			step: 20,
-			if: 20,
-			getAtPosR: 20,
+			step2: 20,
+			step3: 20,
+			if: 50,
+			getAtPosR: 30,
 			getAtPosPRadius: 20,
 			getAtPosPAngle: 0,
 			getAbsR: 20,
@@ -58,7 +60,13 @@ ${iface.strIter()} = ${Math.random() * 2 - 1};
 ${iface.strIter()} = Math.random() * 2 - 1;
 `,
 			step: (iface) => `
-${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModulus) / conf.draw.instructions.stepModulus) * 2 - 1;
+${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModuli[0]) / conf.draw.instructions.stepModuli[0]) * 2 - 1;
+`,
+			step2: (iface) => `
+${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModuli[1]) / conf.draw.instructions.stepModuli[1]) * 2 - 1;
+`,
+			step3: (iface) => `
+${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModuli[2]) / conf.draw.instructions.stepModuli[2]) * 2 - 1;
 `,
 			if: (iface) => `
 ${iface.strIter()} = ${iface.strRand()} > ${iface.strRand()} ? ${iface.strRand()} : ${iface.strRand()};
@@ -151,7 +159,7 @@ ${iface.strIter()} = Math.atan2(${iface.strRand()}, ${iface.strRand()}) / Math.P
 	},
 	draw: {
 		instructions: {
-			stepModulus: 20,
+			stepModuli: [20, 200, 1000],
 			positionMultiplier: 2
 		},
 		outColorWeights: {
