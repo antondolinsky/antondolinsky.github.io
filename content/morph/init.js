@@ -235,6 +235,9 @@ const randFunc = (globals, conf, bodyFunc) => {
 		`let ${new Array(iface.tempCount()).fill(undefined).map((item, index) => `t${index}`).join(', ')};`;
 	const drawFunc = (globals, _canvas, conf, rand) => {
 		globals.step = globals.hasOwnProperty('step') ? globals.step + 1 : 0;
+		if (globals.step === 0) {
+			globals.data = new Float32Array(conf.rand.dataLen).fill(0);
+		}
 		if (conf.autoGen.on && (globals.autoGenNextStep === undefined || globals.step >= globals.autoGenNextStep)) {
 			let isDef = globals.autoGenNextStep !== undefined;
 			globals.autoGenNextStep = globals.step +
@@ -242,9 +245,6 @@ const randFunc = (globals, conf, bodyFunc) => {
 			if (isDef) {
 				rand();
 			}
-		}
-		if (! globals.hasOwnProperty('data')) {
-			globals.data = new Float32Array(conf.rand.dataLen).fill(0);
 		}
 		const context = _canvas.getContext('2d');
 		const size_x = _canvas.width, size_y = _canvas.height;
@@ -269,17 +269,19 @@ const randFunc = (globals, conf, bodyFunc) => {
 		.replace('/* instructionsStr */', instructionsStr);
 };
 
+const sizeCanvas = (_canvas, width, height) => (_canvas.width = width, _canvas.height = height);
+
 const drawInit = (_canvas) => {
-	const width = 400, height = 400;
-	_canvas.width = width, _canvas.height = height;
 	const context = _canvas.getContext('2d');
-	const imageData = context.getImageData(0, 0, width, height);
+	const imageData = context.getImageData(0, 0, _canvas.width, _canvas.height);
 	imageData.data.fill(255);
 	context.putImageData(imageData, 0, 0);
 };
 
-const init = ({qsa, run, draw, rand, bodyFunc, stringify, editorPane}) => {
+const init = ({qsa, step, start, stop, rand, bodyFunc, stringify, editorPane}) => {
 	const _canvas = qsa('[data-canvas]')[0];
+
+	sizeCanvas(_canvas, 400, 400);
 
 	drawInit(_canvas);
 

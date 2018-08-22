@@ -124,22 +124,6 @@ const buildEditorPane = (editorDefs) => {
 
 _document.addEventListener('DOMContentLoaded', () => {
 
-	const editorPane = buildEditorPane(['draw', 'rand', 'conf']);
-
-	qsa('[data-code]')[0].appendChild(editorPane._editorPane);
-
-	const _controls = qsa('[data-controls]')[0];
-
-	const controls = ['step', 'strt', 'stop', 'rand'].reduce((controls, name) => {
-		controls[`_${name}`] = qsa(`[data-control="${name}"]`, _controls)[0];
-		return controls;
-	}, {});
-
-	controls._step.addEventListener('click', (e) => (run.on = true, run(), run.on = false));
-	controls._strt.addEventListener('click', (e) => (run.on = true, run()));
-	controls._stop.addEventListener('click', (e) => run.on = false);
-	controls._rand.addEventListener('click', (e) => rand());
-
 	const run = (() => {
 		const func = () => {
 			if (func.on) {
@@ -151,21 +135,13 @@ _document.addEventListener('DOMContentLoaded', () => {
 		return func;
 	})();
 
-	const globals = {};
-
-	const _canvas = qsa('[data-canvas]')[0];
-
-	let drawFunc, randFunc, conf;
-
-	editorPane.editors['draw'].onSave.push((editor) =>
-		drawFunc = new Function('globals', '_canvas', 'conf', 'rand', editor.get()));
-	editorPane.editors['rand'].onSave.push((editor) =>
-		randFunc = new Function('globals', 'conf', 'bodyFunc', editor.get()));
-	editorPane.editors['conf'].onSave.push((editor) => conf = eval(editor.get()));
-
 	const draw = () => {
 		drawFunc(globals, _canvas, conf, rand);
 	};
+
+	const step = () => (run.on = true, run(), run.on = false);
+	const start = () => (run.on = true, run());
+	const stop = () => run.on = false;
 
 	const rand = () => editorPane.editors['draw'].save(randFunc(globals, conf, bodyFunc));
 
@@ -186,8 +162,36 @@ _document.addEventListener('DOMContentLoaded', () => {
 		return (v) => recursive(v);
 	})();
 
+	const editorPane = buildEditorPane(['draw', 'rand', 'conf']);
+
+	qsa('[data-code]')[0].appendChild(editorPane._editorPane);
+
+	const _controls = qsa('[data-controls]')[0];
+
+	const controls = ['step', 'strt', 'stop', 'rand'].reduce((controls, name) => {
+		controls[`_${name}`] = qsa(`[data-control="${name}"]`, _controls)[0];
+		return controls;
+	}, {});
+
+	controls._step.addEventListener('click', step);
+	controls._strt.addEventListener('click', start);
+	controls._stop.addEventListener('click', stop);
+	controls._rand.addEventListener('click', rand);
+
+	const _canvas = qsa('[data-canvas]')[0];
+
+	let globals, drawFunc, randFunc, conf;
+
+	editorPane.editors['draw'].onSave.push((editor) => {
+		globals = {};
+		drawFunc = new Function('globals', '_canvas', 'conf', 'rand', editor.get());
+	});
+	editorPane.editors['rand'].onSave.push((editor) =>
+		randFunc = new Function('globals', 'conf', 'bodyFunc', editor.get()));
+	editorPane.editors['conf'].onSave.push((editor) => conf = eval(editor.get()));
+
 	window.App.init({
-		qsa, elFromStr, run, draw, rand, bodyFunc, stringify, editorPane
+		qsa, elFromStr, step, start, stop, rand, bodyFunc, stringify, editorPane
 	});
 
 });
