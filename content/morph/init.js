@@ -189,7 +189,7 @@ const editorValueRand = (stringify) => {
 			}
 		},
 
-		drawConfig: {
+		config: {
 			instructions: {
 				permanentMemory: {
 					num: 4,
@@ -294,7 +294,7 @@ const editorValueRand = (stringify) => {
 		return instructionsCtx;
 	}, {varCount: 0, tempCount: 0, instructionsStrs: []});
 
-	const drawConfigStr = `globals.config = ${stringify(randConfig.drawConfig)};`;
+	const configStr = `globals.config = ${stringify(randConfig.config)};`;
 	const vDefStr = `globals.v = new Float64Array(${instructionsCtx.varCount});`;
 	const tDefStr = instructionsCtx.tempCount === 0 ?
 		'' :
@@ -311,7 +311,7 @@ const editorValueRand = (stringify) => {
 
 		if (stepCount === 0) {
 			globals.data = {};
-			/*-- drawConfigStr --*/
+			/*-- configStr --*/
 			globals.size = canv.getSize();
 			globals.sizeMax = Math.max(globals.size.x, globals.size.y);
 			globals.d_o = canv.getData();
@@ -348,7 +348,7 @@ const editorValueRand = (stringify) => {
 		canv.putData(d_n);
 
 	}, {
-		drawConfigStr,
+		configStr,
 		vDefStr,
 		tDefStr,
 		instructionsStr,
