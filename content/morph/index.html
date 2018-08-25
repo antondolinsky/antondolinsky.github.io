@@ -4,7 +4,6 @@
 		<link rel="stylesheet" type="text/css" href="./styles.css">
 		<script src="./script.js"></script>
 		<script src="./init.js"></script>
-		<script src="./examples.js"></script>
 	</head>
 	<body>
 		<div class="area area-top">
@@ -12,15 +11,16 @@
 			<br>
 			Basic use: click 'Start' to start the drawing loop, then click 'Random' until something interesting appears.
 		</div>
-		<div class="area area-canvas">
-			<canvas data-canvas></canvas>
+		<div class="area area-canv" data-area-canv></div>
+		<div class="area area-controls" data-area-controls>
+			<div data-component-controls class="component-controls">
+				<button class="component-controls-item" data-control="step" title="Perform one draw">Step</button>
+				<button class="component-controls-item" data-control="strt" title="Start drawing loop">Start</button>
+				<button class="component-controls-item" data-control="stop" title="Stop drawing loop">Stop</button>
+				<button class="component-controls-item" data-control="rand" title="Generate new drawing function">Random</button>
+				<button class="component-controls-item" data-control="resz" title="Resize the canvas">Resize</button>
+			</div>
 		</div>
-		<div class="area area-control" data-controls>
-			<button data-control="step">Step</button>
-			<button data-control="strt">Start</button>
-			<button data-control="stop">Stop</button>
-			<button data-control="rand">Random</button>
-		</div>
-		<div class="area area-code" data-code></div>
+		<div class="area area-editorgroup" data-area-editorgroup></div>
 	</body>
 </html>

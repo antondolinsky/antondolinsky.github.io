@@ -1,27 +1,26 @@
-const conf = {
-	autoGen: {
-		on: false,
-		range: {
-			min: 5,
-			max: 40
-		}
-	},
-	rand: {
+const editorValueConf = {
+
+};
+
+const editorValueRand = (stringify) => {
+
+	const randConfig = {
+
 		varLookBehind: 10,
-		referenceLookBehind: 10,
+
 		instructionsNumRange: {
 			min: 10,
 			max: 40
 		},
+
 		instructionChances: {
-			getData: 0,
-			putData: 0,
+			getData: 20,
+			putData: 20,
 			reference: 120,
 			const: 10,
-			rand: 30,
-			step: 20,
-			step2: 20,
-			step3: 20,
+			copy: 10,
+			rand: 0,
+			step: 25,
 			if: 50,
 			getAtPosR: 30,
 			getAtPosPRadius: 20,
@@ -36,142 +35,186 @@ const conf = {
 			hyp: 10,
 			cos: 10,
 			atan: 10,
+			atHyp: 10,
+			atAtan: 10
 		},
-		dataLen: 5,
-		instructionsDef: {
-			getData: (iface) => `
-${iface.strRand()} = ${iface.strDataRand()};
-`,
-			putData: (iface) => `
-${iface.strDataRand()} = ${iface.strRand()};
-`,
-			reference: (iface) =>
-`
-${iface.strTemp()} = ${iface.maxRand()};
-${iface.strTemp()} = ${iface.strTempNum(0)} - conf.rand.referenceLookBehind;
-${iface.strTemp()} = ${iface.strTempNum(1)} < 0 ? 0 : ${iface.strTempNum(1)};
-${iface.strTemp()} = Math.floor(((${iface.strRand()} + 1) / 2) * (${iface.strTempNum(0)} - ${iface.strTempNum(2)})) + ${iface.strTempNum(2)};
-${iface.strIter()} = v[${iface.strTempNum(3)}];
-`,
-			const: (iface) => `
-${iface.strIter()} = ${Math.random() * 2 - 1};
-`,
-			rand: (iface) => `
-${iface.strIter()} = Math.random() * 2 - 1;
-`,
-			step: (iface) => `
-${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModuli[0]) / conf.draw.instructions.stepModuli[0]) * 2 - 1;
-`,
-			step2: (iface) => `
-${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModuli[1]) / conf.draw.instructions.stepModuli[1]) * 2 - 1;
-`,
-			step3: (iface) => `
-${iface.strIter()} = ((globals.step % conf.draw.instructions.stepModuli[2]) / conf.draw.instructions.stepModuli[2]) * 2 - 1;
-`,
-			if: (iface) => `
-${iface.strIter()} = ${iface.strRand()} > ${iface.strRand()} ? ${iface.strRand()} : ${iface.strRand()};
-`,
-			getAtPosR: (iface) => `
-${iface.strTemp()} = Math.max(size_x, size_y);
-${iface.strIter()} = ((r_x / size_x) * 2 - 1) * (size_x / ${iface.strTempNum(0)});
-${iface.strIter()} = ((r_y / size_y) * 2 - 1) * (size_y / ${iface.strTempNum(0)});
-`,
-			getAtPosPRadius: (iface) => `
-${iface.strTemp()} = Math.max(size_x, size_y);
-${iface.strTemp()} = ((r_x / size_x) * 2 - 1) * (size_x / ${iface.strTempNum(0)});
-${iface.strTemp()} = ((r_y / size_y) * 2 - 1) * (size_y / ${iface.strTempNum(0)});
-${iface.strIter()} = Math.hypot(${iface.strTempNum(1)}, ${iface.strTempNum(2)}) / Math.sqrt(2);
-`,
-			getAtPosPAngle: (iface) => `
-${iface.strTemp()} = Math.max(size_x, size_y);
-${iface.strTemp()} = ((r_x / size_x) * 2 - 1) * (size_x / ${iface.strTempNum(0)});
-${iface.strTemp()} = ((r_y / size_y) * 2 - 1) * (size_y / ${iface.strTempNum(0)});
-${iface.strIter()} = Math.atan2(${iface.strTempNum(1)}, ${iface.strTempNum(2)}) / Math.PI;
-`,
-			getAbsR: (iface) => `
-${iface.strTemp()} = (size_x / 2 + 0.5 + ${iface.strRand()} * size_x / 2) | 0;
-${iface.strTemp()} = (size_y / 2 + 0.5 + ${iface.strRand()} * size_y / 2) | 0;
-${iface.strTemp()} = ((${iface.strTempNum(0)} % size_x) + size_x) % size_x;
-${iface.strTemp()} = ((${iface.strTempNum(1)} % size_y) + size_y) % size_y;
-${iface.strTemp()} = 4 * (${iface.strTempNum(3)} * size_x + ${iface.strTempNum(2)});
-${iface.strIter()} = d_o[${iface.strTempNum(4)}] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(4)} + 1] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(4)} + 2] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(4)} + 3] / 128 - 1;
-`,
-			getAbsP: (iface) => `
-${iface.strTemp()} = ${iface.strRand()} * Math.max(size_x, size_y) / 2;
-${iface.strTemp()} = ${iface.strRand()} * Math.PI;
-${iface.strTemp()} = (size_x / 2 + 0.5 + ${iface.strTempNum(0)} * Math.cos(${iface.strTempNum(1)})) | 0;
-${iface.strTemp()} = (size_y / 2 + 0.5 + ${iface.strTempNum(0)} * Math.sin(${iface.strTempNum(1)})) | 0;
-${iface.strTemp()} = ((${iface.strTempNum(2)} % size_x) + size_x) % size_x;
-${iface.strTemp()} = ((${iface.strTempNum(3)} % size_y) + size_y) % size_y;
-${iface.strTemp()} = 4 * (${iface.strTempNum(5)} * size_x + ${iface.strTempNum(4)});
-${iface.strIter()} = d_o[${iface.strTempNum(6)}] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(6)} + 1] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(6)} + 2] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(6)} + 3] / 128 - 1;
-`,
-			getRelR: (iface) => `
-${iface.strTemp()} = (r_x + 0.5 + ${iface.strRand()} * conf.draw.instructions.positionMultiplier) | 0;
-${iface.strTemp()} = (r_y + 0.5 + ${iface.strRand()} * conf.draw.instructions.positionMultiplier) | 0;
-${iface.strTemp()} = ((${iface.strTempNum(0)} % size_x) + size_x) % size_x;
-${iface.strTemp()} = ((${iface.strTempNum(1)} % size_y) + size_y) % size_y;
-${iface.strTemp()} = 4 * (${iface.strTempNum(3)} * size_x + ${iface.strTempNum(2)});
-${iface.strIter()} = d_o[${iface.strTempNum(4)}] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(4)} + 1] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(4)} + 2] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(4)} + 3] / 128 - 1;
-`,
-			getRelP: (iface) => `
-${iface.strTemp()} = ${iface.strRand()} * conf.draw.instructions.positionMultiplier;
-${iface.strTemp()} = ${iface.strRand()} * Math.PI;
-${iface.strTemp()} = (r_x + 0.5 + ${iface.strTempNum(0)} * Math.cos(${iface.strTempNum(1)})) | 0;
-${iface.strTemp()} = (r_y + 0.5 + ${iface.strTempNum(0)} * Math.sin(${iface.strTempNum(1)})) | 0;
-${iface.strTemp()} = ((${iface.strTempNum(2)} % size_x) + size_x) % size_x;
-${iface.strTemp()} = ((${iface.strTempNum(3)} % size_y) + size_y) % size_y;
-${iface.strTemp()} = 4 * (${iface.strTempNum(5)} * size_x + ${iface.strTempNum(4)});
-${iface.strIter()} = d_o[${iface.strTempNum(6)}] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(6)} + 1] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(6)} + 2] / 128 - 1;
-${iface.strIter()} = d_o[${iface.strTempNum(6)} + 3] / 128 - 1;`,
-			mod: (iface) => `
-${iface.strTemp()} = (${iface.strRand()} + 1) / 2;
-${iface.strTemp()} = (${iface.strRand()} + 1) / 2;
-${iface.strIter()} = ${iface.strTempNum(1)} === 0 ? ${iface.strTempNum(0)} : (${iface.strTempNum(0)} % ${iface.strTempNum(1)}) * 2 - 1;
-`,
-			add: (iface) => `
-${iface.strIter()} = (${iface.strRand()} + ${iface.strRand()}) / 2;
-`,
-			mul: (iface) => `
-${iface.strIter()} = ${iface.strRand()} * ${iface.strRand()};
-`,
-			hyp: (iface) => `
-${iface.strIter()} = Math.hypot(${iface.strRand()}, ${iface.strRand()}) / Math.sqrt(2);
-`,
-			cos: (iface) => `
-${iface.strIter()} = Math.cos(${iface.strRand()} * Math.PI);
-`,
-			atan: (iface) => `
-${iface.strIter()} = Math.atan2(${iface.strRand()}, ${iface.strRand()}) / Math.PI;
-`
-		}
-	},
-	draw: {
-		instructions: {
-			stepModuli: [20, 200, 1000],
-			positionMultiplier: 2
-		},
-		outColorWeights: {
-			r: 0.5,
-			g: 0.5,
-			b: 0.5,
-			a: 0
-		}
-	}
-};
 
-const randFunc = (globals, conf, bodyFunc) => {
+		instructionsDef: {
+			getData: (_, $) => {
+				if (! $.data.hasOwnProperty('permanentMemory')) {
+					$.data.permanentMemory = new Float32Array($.config.instructions.permanentMemory.num).fill(0);
+				}
+				_.output[0] = $.data.permanentMemory[Math.floor(((_.input[0] + 1) / 2) * $.data.permanentMemory.length)];
+			},
+			putData: (_, $) => {
+				if (! $.data.hasOwnProperty('permanentMemory')) {
+					$.data.permanentMemory = new Float32Array($.config.instructions.permanentMemory.num).fill(0);
+				}
+				if ((_.input[0] + 1) / 2 > $.config.instructions.permanentMemory.changeThreshold) {
+					$.data.permanentMemory[Math.floor(((_.input[1] + 1) / 2) * $.data.permanentMemory.length)] = _.input[2];
+				}
+			},
+			reference: (_, $) => {
+				_.temp[0] = _.varBase;
+				_.temp[1] = _.temp[0] - $.config.instructions.reference.lookBehind;
+				_.temp[2] = _.temp[1] < 0 ? 0 : _.temp[1];
+				_.temp[3] = Math.floor(((_.input[0] + 1) / 2) * (_.temp[0] - _.temp[2])) + _.temp[2];
+				_.output[0] = $.v[_.temp[3]];
+			},
+			const: (_, $) => {
+				_.output[0] = Math.random() * 2 - 1;
+			},
+			copy: (_, $) => {
+				_.output[0] = _.input[0];
+			},
+			rand: (_, $) => {
+				_.output[0] = Math.random() * 2 - 1;
+			},
+			step: (_, $) => {
+				if (! $.data.hasOwnProperty('steps')) {
+					$.data.steps = new Array($.config.instructions.step.num).fill(null);
+				}
+				_.temp[0] = Math.floor(((_.input[0] + 1) / 2) * $.config.instructions.step.num);
+				if ($.data.steps[_.temp[0]] === null || _.input[0] > $.config.instructions.step.changeThreshold * 2 - 1) {
+					_.temp[1] = Math.max(Math.floor(((_.input[1] + 1) / 2) * $.config.instructions.step.multiplier), 1);
+					data.steps[_.temp[0]] = {
+						length: _.temp[1],
+						phase: Math.floor(((_.input[2] + 1) / 2) * _.temp[1])
+					};
+				}
+				_.temp[2] = data.steps[_.temp[0]];
+				_.output[0] = (((($.stepCount + _.temp[2].phase) % _.temp[2].length) / _.temp[2].length)) * 2 - 1;
+			},
+			if: (_, $) => {
+				_.output[0] = _.input[0] > _.input[1] ? _.input[2] : _.input[3];
+			},
+			getAtPosR: (_, $) => {
+				_.output[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
+				_.output[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
+			},
+			getAtPosPRadius: (_, $) => {
+				_.temp[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
+				_.temp[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
+				_.output[0] = ((Math.hypot(_.temp[0], _.temp[1]) / Math.SQRT2) * 2 - 1) * 0.99999999;
+			},
+			getAtPosPAngle: (_, $) => {
+				_.temp[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
+				_.temp[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
+				_.temp[2] = Math.atan2(_.temp[0], _.temp[1]) / Math.PI;
+				_.output[0] = _.temp[2] === 1 ? 0 : _.temp[2];
+			},
+			getAbsR: (_, $) => {
+				_.temp[0] = ($.size.x / 2 + 0.5 + _.input[0] * $.size.x / 2) | 0;
+				_.temp[1] = ($.size.y / 2 + 0.5 + _.input[1] * $.size.y / 2) | 0;
+				_.temp[2] = ((_.temp[0] % $.size.x) + $.size.x) % $.size.x;
+				_.temp[3] = ((_.temp[1] % $.size.y) + $.size.y) % $.size.y;
+				_.temp[4] = 4 * (_.temp[3] * $.size.x + _.temp[2]);
+				_.output[0] = $.d_o[_.temp[4]] / 128 - 1;
+				_.output[1] = $.d_o[_.temp[4] + 1] / 128 - 1;
+				_.output[2] = $.d_o[_.temp[4] + 2] / 128 - 1;
+				_.output[3] = $.d_o[_.temp[4] + 3] / 128 - 1;
+			},
+			getAbsP: (_, $) => {
+				_.temp[0] = _.input[0] * $.sizeMax / 2;
+				_.temp[1] = _.input[1] * Math.PI;
+				_.temp[2] = ($.size.x / 2 + 0.5 + _.temp[0] * Math.cos(_.temp[1])) | 0;
+				_.temp[3] = ($.size.y / 2 + 0.5 + _.temp[0] * Math.sin(_.temp[1])) | 0;
+				_.temp[4] = ((_.temp[2] % $.size.x) + $.size.x) % $.size.x;
+				_.temp[5] = ((_.temp[3] % $.size.y) + $.size.y) % $.size.y;
+				_.temp[6] = 4 * (_.temp[5] * $.size.x + _.temp[4]);
+				_.output[0] = $.d_o[_.temp[6]] / 128 - 1;
+				_.output[1] = $.d_o[_.temp[6] + 1] / 128 - 1;
+				_.output[2] = $.d_o[_.temp[6] + 2] / 128 - 1;
+				_.output[3] = $.d_o[_.temp[6] + 3] / 128 - 1;
+			},
+			getRelR: (_, $) => {
+				_.temp[0] = ($.r_x + 0.5 + _.input[0] * $.config.instructions.positionMultiplier) | 0;
+				_.temp[1] = ($.r_y + 0.5 + _.input[1] * $.config.instructions.positionMultiplier) | 0;
+				_.temp[2] = ((_.temp[0] % $.size.x) + $.size.x) % $.size.x;
+				_.temp[3] = ((_.temp[1] % $.size.y) + $.size.y) % $.size.y;
+				_.temp[4] = 4 * (_.temp[3] * $.size.x + _.temp[2]);
+				_.output[0] = $.d_o[_.temp[4]] / 128 - 1;
+				_.output[1] = $.d_o[_.temp[4] + 1] / 128 - 1;
+				_.output[2] = $.d_o[_.temp[4] + 2] / 128 - 1;
+				_.output[3] = $.d_o[_.temp[4] + 3] / 128 - 1;
+			},
+			getRelP: (_, $) => {
+				_.temp[0] = _.input[0] * $.config.instructions.positionMultiplier;
+				_.temp[1] = _.input[1] * Math.PI;
+				_.temp[2] = ($.r_x + 0.5 + _.temp[0] * Math.cos(_.temp[1])) | 0;
+				_.temp[3] = ($.r_y + 0.5 + _.temp[0] * Math.sin(_.temp[1])) | 0;
+				_.temp[4] = ((_.temp[2] % $.size.x) + $.size.x) % $.size.x;
+				_.temp[5] = ((_.temp[3] % $.size.y) + $.size.y) % $.size.y;
+				_.temp[6] = 4 * (_.temp[5] * $.size.x + _.temp[4]);
+				_.output[0] = $.d_o[_.temp[6]] / 128 - 1;
+				_.output[1] = $.d_o[_.temp[6] + 1] / 128 - 1;
+				_.output[2] = $.d_o[_.temp[6] + 2] / 128 - 1;
+				_.output[3] = $.d_o[_.temp[6] + 3] / 128 - 1;
+			},
+			mod: (_, $) => {
+				_.temp[0] = (_.input[0] + 1) / 2;
+				_.temp[1] = (_.input[1] + 1) / 2;
+				_.output[0] = _.temp[1] === 0 ? _.temp[0] : (_.temp[0] % _.temp[1]) * 2 - 1;
+			},
+			add: (_, $) => {
+				_.output[0] = (_.input[0] + _.input[1]) / 2;
+			},
+			mul: (_, $) => {
+				_.output[0] = _.input[0] * _.input[1];
+			},
+			hyp: (_, $) => {
+				_.output[0] = ((Math.hypot(_.input[0],  _.input[1]) / Math.SQRT2) * 2 - 1) * 0.99999999;
+			},
+			cos: (_, $) => {
+				_.output[0] = Math.cos(_.input[0] * Math.PI) * 0.99999999;
+			},
+			atan: (_, $) => {
+				_.temp[0] = Math.atan2(_.input[0],  _.input[1]) / Math.PI;
+				_.output[0] = _.temp[0] === 1 ? 0 : _.temp[0];
+			},
+			atHyp: (_, $) => {
+				_.temp[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
+				_.temp[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
+				_.temp[2] = (_.input[0] - _.temp[0]) / 2;
+				_.temp[3] = (_.input[1] - _.temp[1]) / 2;
+				_.output[0] = ((Math.hypot(_.temp[2], _.temp[3]) / Math.SQRT2) * 2 - 1) * 0.99999999;
+			},
+			atAtan: (_, $) => {
+				_.temp[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
+				_.temp[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
+				_.temp[2] = (_.input[0] - _.temp[0]) / 2;
+				_.temp[3] = (_.input[1] - _.temp[1]) / 2;
+				_.temp[4] = Math.atan2(_.temp[2], _.temp[3]) / Math.PI;
+				_.output[0] = _.temp[4] === 1 ? 0 : _.temp[4];
+			}
+		},
+
+		drawConfig: {
+			instructions: {
+				permanentMemory: {
+					num: 4,
+					changeThreshold: 0.8
+				},
+				reference: {
+					lookBehind: 10
+				},
+				step: {
+					num: 4,
+					multiplier: 1000,
+					changeThreshold: 0.8
+				},
+				positionMultiplier: 2
+			},
+			outColorWeights: {
+				r: 0.5,
+				g: 0.5,
+				b: 0.5,
+				a: 0
+			}
+		}
+
+	};
+
 	const getByChance = (chances) => {
 		const chancesKeys = Object.keys(chances);
 		const valueSum = chancesKeys.reduce((sum, key) => sum + chances[key], 0);
@@ -187,111 +230,143 @@ const randFunc = (globals, conf, bodyFunc) => {
 			i ++;
 		}
 	};
-	let instructions;
-	let iface = (() => {
-		let count = 0;
-		let tempCount = 0;
-		let instructionTempCount;
-		let maxRand;
-		return {
-			instructions,
-			count: (val) => val === undefined ? count : count = val,
-			tempCount: () => tempCount,
-			maxRand: () => maxRand,
-			update: () => {
-				maxRand = count;
-				instructionTempCount = tempCount;
-			},
-			strIter: () => `v[${count ++}]`,
-			strRand: () => {
-				const max = maxRand;
-				const min = Math.max(max - conf.rand.varLookBehind, 0);
-				return `v[${Math.floor(Math.random() * (max - min)) + min}]`;
-			},
-			strTemp: () => `t${tempCount ++}`,
-			strTempNum: (n) => `t${instructionTempCount + n}`,
-			strDataRand: () => `globals.data[${Math.floor(Math.random() * conf.rand.dataLen)}]`
+
+	const compiler = (() => {
+		const getUniqueMatches = (str, re) => {
+		  let matches = [], match;
+		  while (match = re.exec(str)) {
+		    matches.push(match[1]);
+		  }
+		  return matches.filter((item, index) => matches.indexOf(item) === index);
 		};
+		const getFuncBodyStr = (func) => {
+			const funcStr = func.toString();
+			return funcStr.substring(funcStr.indexOf('{') + 1, funcStr.lastIndexOf('}'));
+		};
+		const inputMatches = (func) =>
+			getUniqueMatches(getFuncBodyStr(func), (/_\.input\[([0-9]+)\]/g)).map(Number).sort((a, b) => a > b);
+		const outputMatches = (func) =>
+			getUniqueMatches(getFuncBodyStr(func), (/_\.output\[([0-9]+)\]/g)).map(Number).sort((a, b) => a > b);
+		const tempMatches = (func) =>
+			getUniqueMatches(getFuncBodyStr(func), (/_\.temp\[([0-9]+)\]/g)).map(Number).sort((a, b) => a > b);
+		const compile = (func, inputArr, varBase, tempBase) => {
+			const funcBodyStr = getFuncBodyStr(func);
+			const replace0 = funcBodyStr.replace(/\$\./g, '');
+			const replace1 = inputMatches(func).reduce((soFar, curr) => {
+				return soFar.replace(new RegExp(`_\\.input\\[${curr}\\]`, 'g'), `v[${inputArr[curr]}]`);
+			}, replace0);
+			const replace2 = tempMatches(func).reduce((soFar, curr) => {
+				return soFar.replace(new RegExp(`_\\.temp\\[${curr}\\]`, 'g'), `t${tempBase + curr}`);
+			}, replace1);
+			const replace3 = outputMatches(func).reduce((soFar, curr) => {
+				return soFar.replace(new RegExp(`_\\.output\\[${curr}\\]`, 'g'), `v[${varBase + curr}]`);
+			}, replace2);
+			const replace4 = replace3.replace(/_\.varBase/g, varBase.toString());
+			const compiledStr = replace4;
+			return compiledStr;
+		};
+		return {inputMatches, outputMatches, tempMatches, compile};
 	})();
-	iface.count(1);
+
 	const instructionsNum =
-		Math.floor(Math.random() * (conf.rand.instructionsNumRange.max - conf.rand.instructionsNumRange.min)) +
-		conf.rand.instructionsNumRange.min;
-	instructions = []
-		.concat(`v[0] = ${Math.random() * 2 - 1}`)
-		.concat(new Array(instructionsNum)
+		Math.floor(Math.random() * (randConfig.instructionsNumRange.max - randConfig.instructionsNumRange.min)) +
+		randConfig.instructionsNumRange.min;
+	const instructionTypes = []
+		.concat(['const'])
+		.concat(new Array(instructionsNum - 1)
 			.fill(true)
-			.map((item) => {
-				iface.update();
-				return conf.rand.instructionsDef[getByChance(conf.rand.instructionChances)](iface);
-			}));
-	const instructionsStr = instructions
+			.map((item) => getByChance(randConfig.instructionChances)));
+	const instructionsCtx = instructionTypes.reduce((instructionsCtx, instructionType) => {
+		const func = randConfig.instructionsDef[instructionType];
+		const inputCount = compiler.inputMatches(func).length;
+		const outputCount = compiler.outputMatches(func).length;
+		const tempCount = compiler.tempMatches(func).length;
+		const inputArr = new Array(inputCount)
+			.fill(true)
+			.map(() => ((min, max) => Math.floor(Math.random() * (max - min)) + min)
+				(Math.max(instructionsCtx.varCount - randConfig.varLookBehind, 0), instructionsCtx.varCount));
+		const outputArr = new Array(outputCount)
+			.fill(true)
+			.map((item, index) => instructionsCtx.varCount + index);
+		const instructionStr = compiler.compile(func, inputArr, instructionsCtx.varCount, instructionsCtx.tempCount);
+		instructionsCtx.varCount += outputCount, instructionsCtx.tempCount += tempCount;
+		instructionsCtx.instructionsStrs.push(instructionStr);
+		return instructionsCtx;
+	}, {varCount: 0, tempCount: 0, instructionsStrs: []});
+
+	const drawConfigStr = `globals.config = ${stringify(randConfig.drawConfig)};`;
+	const vDefStr = `globals.v = new Float64Array(${instructionsCtx.varCount});`;
+	const tDefStr = instructionsCtx.tempCount === 0 ?
+		'' :
+		`let ${new Array(instructionsCtx.tempCount).fill(true).map((item, index) => `t${index.toString()}`).join(', ')};`;
+	const instructionsStr = instructionsCtx.instructionsStrs
 		.map((str) => str.trim())
 		.map((str) => '\t\t\t' + str.split('\n').join('\n\t\t\t'))
 		.join('\n\n');
-	const vDefStr = `const v_l = ${iface.count()}; const v = new Float32Array(v_l);`;
-	const tempDefStr = iface.tempCount() === 0 ?
-		'' :
-		`let ${new Array(iface.tempCount()).fill(undefined).map((item, index) => `t${index}`).join(', ')};`;
-	const drawFunc = (globals, _canvas, conf, rand) => {
-		globals.step = globals.hasOwnProperty('step') ? globals.step + 1 : 0;
-		if (globals.step === 0) {
-			globals.data = new Float32Array(conf.rand.dataLen).fill(0);
+	const writeStr = new Array(4).fill(true).map((item, index) =>
+		`d_n[di] = (d_o[di] * w_a_${index} + (v[${instructionsCtx.varCount - 4 + index}] + 1) * 128 * w_o_${index}) | 0; di ++;`
+		).join('\n');
+
+	return stringify((stepCount, globals, canv) => {
+
+		if (stepCount === 0) {
+			globals.data = {};
+			/*-- drawConfigStr --*/
+			globals.size = canv.getSize();
+			globals.sizeMax = Math.max(globals.size.x, globals.size.y);
+			globals.d_o = canv.getData();
+			globals.d_n = canv.buildEmptyData();
+			const outColorWeights = globals.config.outColorWeights;
+			const w_o = new Float32Array([outColorWeights.r, outColorWeights.g, outColorWeights.b, outColorWeights.a]);
+			globals.w_o = w_o;
+			globals.w_a = new Float32Array([1 - w_o[0], 1 - w_o[1], 1 - w_o[2], 1 - w_o[3]]);
+			/*-- vDefStr --*/
 		}
-		if (conf.autoGen.on && (globals.autoGenNextStep === undefined || globals.step >= globals.autoGenNextStep)) {
-			let isDef = globals.autoGenNextStep !== undefined;
-			globals.autoGenNextStep = globals.step +
-				Math.floor(Math.random() * (conf.autoGen.range.max - conf.autoGen.range.min)) + conf.autoGen.range.min;
-			if (isDef) {
-				rand();
-			}
-		}
-		const context = _canvas.getContext('2d');
-		const size_x = _canvas.width, size_y = _canvas.height;
-		const imageData = context.getImageData(0, 0, size_x, size_y);
-		const d_o = imageData.data, d_n = new Uint8ClampedArray(d_o);
-		const outColorWeights = conf.draw.outColorWeights;
-		const w_o = new Float32Array([outColorWeights.r, outColorWeights.g, outColorWeights.b, outColorWeights.a]);
-		const w_a = new Float32Array([1 - w_o[0], 1 - w_o[1], 1 - w_o[2], 1 - w_o[3]]);
-		/* vDefStr */
-		/* tempDefStr */
+
+		/*-- tDefStr --*/
+
+		const {data, config, size, sizeMax, d_o, d_n, w_o, w_a, v} = globals;
+
 		let di = 0;
-		for (let r_y = 0; r_y < size_y; r_y ++) { for (let r_x = 0; r_x < size_x; r_x ++) { v.fill(0);
+		let w_a_0 = w_a[0], w_a_1 = w_a[1], w_a_2 = w_a[2], w_a_3 = w_a[3];
+		let w_o_0 = w_o[0], w_o_1 = w_o[1], w_o_2 = w_o[2], w_o_3 = w_o[3];
 
-/* instructionsStr */
+		for (let r_y = 0; r_y < size.y; r_y ++) { for (let r_x = 0; r_x < size.x; r_x ++) {
 
-		for (let i = 0, s = v_l - 4; i < 4; i ++, di ++) { d_n[di] = (d_o[di] * w_a[i] + (v[s + i] + 1) * 128 * w_o[i]) | 0; } } }
-		context.putImageData((imageData.data.set(d_n), imageData), 0, 0);
-	};
-	return bodyFunc(drawFunc)
-		.replace('/* vDefStr */', vDefStr)
-		.replace('/* tempDefStr */', tempDefStr)
-		.replace('/* instructionsStr */', instructionsStr);
+			v.fill(0);
+
+			/* Start of instructions */
+
+			/*-- instructionsStr --*/
+
+			/* End of instructions */
+
+			/*-- writeStr --*/
+
+		} }
+
+		canv.putData(d_n);
+
+	}, {
+		drawConfigStr,
+		vDefStr,
+		tDefStr,
+		instructionsStr,
+		writeStr
+	});
+
 };
 
-const sizeCanvas = (_canvas, width, height) => (_canvas.width = width, _canvas.height = height);
+const init = ({stringify, editors, canv, randGenerate}) => {
 
-const drawInit = (_canvas) => {
-	const context = _canvas.getContext('2d');
-	const imageData = context.getImageData(0, 0, _canvas.width, _canvas.height);
-	imageData.data.fill(255);
-	context.putImageData(imageData, 0, 0);
-};
+	canv.setSize({x: 400, y: 400});
+	canv.fill([255, 255, 255, 255]);
 
-const init = ({qsa, step, start, stop, rand, bodyFunc, stringify, editorPane}) => {
-	const _canvas = qsa('[data-canvas]')[0];
+	editors['rand'].save(stringify(editorValueRand));
+	editors['conf'].save(stringify(editorValueConf));
 
-	sizeCanvas(_canvas, 400, 400);
+	randGenerate();
 
-	drawInit(_canvas);
-
-	Object.values(editorPane.editors)
-		.forEach((editor) => Object.assign(editor._editor.style, {width: '800px', height: '400px'}));
-
-	editorPane.editors['rand'].save(bodyFunc(randFunc));
-	editorPane.editors['conf'].save(`(${stringify(conf)})`);
-
-	rand();
 };
 
 window.App.init = init;

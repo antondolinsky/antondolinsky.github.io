@@ -6,40 +6,34 @@ body {
 	text-align: center;
 }
 
-.area-top {
+.area.area-top {
 	font-size: 12px;
 	margin-bottom: 8px;
 }
 
-.editor-pane {
-	margin: 0 auto;
-}
-
-canvas {
+.componentCanv > .componentCanv-canvas {
 	border: 1px solid #000;
 }
 
-button {
+.componentControls > .componentControls-item {
+	width: 60px;
 	cursor: pointer;
 }
 
-.area-control > button {
-	width: 60px;
-}
-
-.editor-pane {
+.componentEditorgroup {
 	position: relative;
+	margin: 0 auto;
 	width: 800px;
 	height: 400px;
 }
 
-.editor-pane-tabs {
+.componentEditorgroup > .componentEditorgroup-tabs {
 	position: absolute;
 	left: 0;
 	top: 0;
 }
 
-.editor-pane-tabs-tab {
+.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab {
 	display: inline-block;
 	position: relative;
 	width: 40px;
@@ -51,11 +45,11 @@ button {
 	cursor: pointer;
 }
 
-.editor-pane-tabs-tab.top {
+.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab.top {
 	background-color: #fff;
 }
 
-.editor-pane-tabs-tab.top:after {
+.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab.top:after {
 	content: '';
   position: absolute;
   left: 0;
@@ -65,23 +59,29 @@ button {
   width: 40px;
 }
 
-.editor-pane-tabs-tab a {
+.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab > .componentEditorgroup-tabs-tab-link {
 	text-decoration: none;
 	color: #000;
 }
 
-.editor-pane-controls {
+.componentEditorgroup > .componentEditorgroup-controls {
 	position: absolute;
 	right: -2px;
 	top: 0;
 }
 
-.editor-pane-editors {
+.componentEditorgroup > .componentEditorgroup-controls > .componentEditorgroup-controls-item {
+	cursor: pointer;
+}
+
+.componentEditorgroup > .componentEditorgroup-editors {
 	padding-top: 21px;
 }
 
-.editor-pane-editors-editor {
+.componentEditorgroup > .componentEditorgroup-editors > .componentEditorgroup-editors-editor {
 	display: none;
+	width: 800px;
+	height: 400px;
 	padding: 0;
 	border: 1px solid #000;
 	resize: none;
@@ -90,6 +90,6 @@ button {
 	tab-size: 4;
 }
 
-.editor-pane-editors-editor.top {
+.componentEditorgroup > .componentEditorgroup-editors > .componentEditorgroup-editors-editor.top {
 	display: block;
 }
