@@ -1,1 +1,1 @@
-To see this project in action, go [here](https://antondolinsky.github.io/content/morph/index.html).
+To see this project in action, go [here](https://antondolinsky.github.io/content/morph).
