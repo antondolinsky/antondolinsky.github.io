@@ -11,24 +11,24 @@ const editorValueRand = (stringify) => {
 			max: 40
 		},
 
-		startInstructions: ['const'],	/* there must be at least one instruction type in the array */
+		startInstructions: ['random'],	/* there must be at least one instruction type in the array */
 
 		instructionChances: {
 			getData: 20,
 			putData: 20,
 			reference: 120,
-			const: 10,
+			constant: 10,
 			copy: 10,
-			rand: 2,
+			random: 0,
 			step: 25,
-			if: 50,
-			getAtPosR: 30,
-			getAtPosPRadius: 20,
-			getAtPosPAngle: 0,
-			getAbsR: 20,
-			getAbsP: 0,
-			getRelR: 50,
-			getRelP: 50,
+			conditional: 50,
+			getPositionRectangular: 30,
+			getPositionPolarRadius: 20,
+			getPositionPolarAngle: 0,
+			getColorAbsoluteRectangular: 20,
+			getColorAbsolutePolar: 0,
+			getColorRelativeRectangular: 50,
+			getColorRelativePolar: 50,
 			mod: 30,
 			add: 30,
 			mul: 10,
@@ -61,13 +61,13 @@ const editorValueRand = (stringify) => {
 				_.temp[3] = Math.floor(((_.input[0] + 1) / 2) * (_.temp[0] - _.temp[2])) + _.temp[2];
 				_.output[0] = $.v[_.temp[3]];
 			},
-			const: (_, $) => {
+			constant: (_, $) => {
 				_.output[0] = _.eval('#Math.random() * 2 - 1#');
 			},
 			copy: (_, $) => {
 				_.output[0] = _.input[0];
 			},
-			rand: (_, $) => {
+			random: (_, $) => {
 				_.output[0] = Math.random() * 2 - 1;
 			},
 			step: (_, $) => {
@@ -85,25 +85,25 @@ const editorValueRand = (stringify) => {
 				_.temp[2] = data.steps[_.temp[0]];
 				_.output[0] = (((($.stepCount + _.temp[2].phase) % _.temp[2].length) / _.temp[2].length)) * 2 - 1;
 			},
-			if: (_, $) => {
+			conditional: (_, $) => {
 				_.output[0] = _.input[0] > _.input[1] ? _.input[2] : _.input[3];
 			},
-			getAtPosR: (_, $) => {
+			getPositionRectangular: (_, $) => {
 				_.output[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
 				_.output[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
 			},
-			getAtPosPRadius: (_, $) => {
+			getPositionPolarRadius: (_, $) => {
 				_.temp[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
 				_.temp[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
 				_.output[0] = ((Math.hypot(_.temp[0], _.temp[1]) / Math.SQRT2) * 2 - 1) * 0.99999999;
 			},
-			getAtPosPAngle: (_, $) => {
+			getPositionPolarAngle: (_, $) => {
 				_.temp[0] = (($.r_x / $.size.x) * 2 - 1) * ($.size.x / $.sizeMax);
 				_.temp[1] = (($.r_y / $.size.y) * 2 - 1) * ($.size.y / $.sizeMax);
 				_.temp[2] = Math.atan2(_.temp[0], _.temp[1]) / Math.PI;
 				_.output[0] = _.temp[2] === 1 ? 0 : _.temp[2];
 			},
-			getAbsR: (_, $) => {
+			getColorAbsoluteRectangular: (_, $) => {
 				_.temp[0] = ($.size.x / 2 + 0.5 + _.input[0] * $.size.x / 2) | 0;
 				_.temp[1] = ($.size.y / 2 + 0.5 + _.input[1] * $.size.y / 2) | 0;
 				_.temp[2] = ((_.temp[0] % $.size.x) + $.size.x) % $.size.x;
@@ -114,7 +114,7 @@ const editorValueRand = (stringify) => {
 				_.output[2] = $.d_o[_.temp[4] + 2] / 128 - 1;
 				_.output[3] = $.d_o[_.temp[4] + 3] / 128 - 1;
 			},
-			getAbsP: (_, $) => {
+			getColorAbsolutePolar: (_, $) => {
 				_.temp[0] = _.input[0] * $.sizeMax / 2;
 				_.temp[1] = _.input[1] * Math.PI;
 				_.temp[2] = ($.size.x / 2 + 0.5 + _.temp[0] * Math.cos(_.temp[1])) | 0;
@@ -127,7 +127,7 @@ const editorValueRand = (stringify) => {
 				_.output[2] = $.d_o[_.temp[6] + 2] / 128 - 1;
 				_.output[3] = $.d_o[_.temp[6] + 3] / 128 - 1;
 			},
-			getRelR: (_, $) => {
+			getColorRelativeRectangular: (_, $) => {
 				_.temp[0] = ($.r_x + 0.5 + _.input[0] * _.config('positionMultiplier')) | 0;
 				_.temp[1] = ($.r_y + 0.5 + _.input[1] * _.config('positionMultiplier')) | 0;
 				_.temp[2] = ((_.temp[0] % $.size.x) + $.size.x) % $.size.x;
@@ -138,7 +138,7 @@ const editorValueRand = (stringify) => {
 				_.output[2] = $.d_o[_.temp[4] + 2] / 128 - 1;
 				_.output[3] = $.d_o[_.temp[4] + 3] / 128 - 1;
 			},
-			getRelP: (_, $) => {
+			getColorRelativePolar: (_, $) => {
 				_.temp[0] = _.input[0] * _.config('positionMultiplier');
 				_.temp[1] = _.input[1] * Math.PI;
 				_.temp[2] = ($.r_x + 0.5 + _.temp[0] * Math.cos(_.temp[1])) | 0;
