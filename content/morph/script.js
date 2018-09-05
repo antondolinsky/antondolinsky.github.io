@@ -1,9 +1,7 @@
 window.App = {};
 
-const _document = document;
-
-const elFromStr = (str) => Object.assign(_document.createElement('DIV'), {innerHTML: str.trim()}).firstChild;
-const qsa = (selectors, _root) => (_root || _document).querySelectorAll(selectors);
+const elFromStr = (str) => Object.assign(document.createElement('DIV'), {innerHTML: str.trim()}).firstChild;
+const qsa = (selectors, _root) => (_root || document).querySelectorAll(selectors);
 
 const componentBuilders = {
 
@@ -22,10 +20,6 @@ const componentBuilders = {
 			const size = getSize();
 			return size.x * size.y * 4;
 		};
-		const clear = () => {
-			const size = getSize();
-			context.clearRect(0, 0, size.x, size.y);
-		};
 		const buildEmptyData = () => new Uint8ClampedArray(getDataLength());
 		const getData = () => {
 			const size = getSize();
@@ -38,13 +32,14 @@ const componentBuilders = {
 			context.putImageData(imageData, 0, 0);
 		};
 		const fill = (colorValues) => {
+			const colorValuesArr = [colorValues.r, colorValues.g, colorValues.b, colorValues.a];
 			const data = buildEmptyData();
-			for (let i = 0; i < data.length; i += 1) {
-				data[i] = colorValues[i % 4];
+			for (let i = 0; i < data.length; i ++) {
+				data[i] = colorValuesArr[i % 4];
 			}
 			putData(data);
 		};
-		return {_root, _canvas, context, getSize, setSize, getDataLength, clear, buildEmptyData, getData, putData, fill};
+		return {_root, _canvas, context, getSize, setSize, getDataLength, buildEmptyData, getData, putData, fill};
 	},
 
 	editorgroup: (editorDefs) => {
@@ -53,9 +48,12 @@ const componentBuilders = {
 				<div data-component-editorgroup class="componentEditorgroup">
 					<div class="componentEditorgroup-tabs" data-tabs></div>
 					<div class="componentEditorgroup-controls" data-controls>
-						<button class="componentEditorgroup-controls-item" data-control="back" title="Go back in this editor's history">Back</button>
-						<button class="componentEditorgroup-controls-item" data-control="forw" title="Go forward in this editor's history">Forw</button>
-						<button class="componentEditorgroup-controls-item" data-control="save" title="Save the current content of this editor">Save</button>
+						<button class="componentEditorgroup-controls-item" data-control="back"
+							title="${v.literals.backTitle}">${v.literals.backValue}</button>
+						<button class="componentEditorgroup-controls-item" data-control="forw"
+							title="${v.literals.forwTitle}">${v.literals.forwValue}</button>
+						<button class="componentEditorgroup-controls-item" data-control="save"
+							title="${v.literals.saveTitle}">${v.literals.saveValue}</button>
 					</div>
 					<div class="componentEditorgroup-editors" data-editors></div>
 				</div>
@@ -69,7 +67,7 @@ const componentBuilders = {
 				<textarea class="componentEditorgroup-editors-editor" data-name="${v.name}"></textarea>
 			`
 		};
-		const _root = elFromStr(templates.root());
+		const _root = elFromStr(templates.root({literals: window.App.literals.templates.editorgroup.root}));
 		const _tabs = qsa('[data-tabs]', _root)[0];
 		const _controls = qsa('[data-controls', _root)[0];
 		const _editors = qsa('[data-editors]', _root)[0];
@@ -90,13 +88,13 @@ const componentBuilders = {
 		}, {});
 		controls._back.addEventListener('click', (e) => {
 			const editor = getTopEditor();
-			editor.historyIndex -= 1;
+			editor.historyIndex --;
 			editor._editor.value = editor.history[editor.historyIndex];
 			setControlsEnabledMode();
 		});
 		controls._forw.addEventListener('click', (e) => {
 			const editor = getTopEditor();
-			editor.historyIndex += 1;
+			editor.historyIndex ++;
 			editor._editor.value = editor.history[editor.historyIndex];
 			setControlsEnabledMode();
 		});
@@ -107,7 +105,9 @@ const componentBuilders = {
 		const editors = [];
 		const addEditor = (name) => {
 			const _tab = elFromStr(templates.tab({name, text: name.charAt(0).toUpperCase() + name.substr(1)}));
-			const _editor = elFromStr(templates.editor({name}));
+			const _editor = Object.assign(elFromStr(templates.editor({name})), {
+				spellcheck: false
+			});
 			if (editorsArr.length === 0) {
 				_tab.classList.add('top');
 				_editor.classList.add('top');
@@ -152,11 +152,16 @@ const componentBuilders = {
 			const editor = {
 				name,
 				_editor,
+				maxHistoryLength: Infinity,
 				history: [],
 				historyIndex: null,
 				get: () => editor.history[editor.history.length - 1],
 				save: (str) => {
 					editor.history.push(str);
+					if (editor.history.length > editor.maxHistoryLength) {
+						editor.history.shift();
+						editor.historyIndex = Math.max(0, editor.historyIndex - 1);
+					}
 					editor.historyIndex = editor.history.length - 1;
 					_editor.value = str;
 					setControlsEnabledMode();
@@ -173,45 +178,83 @@ const componentBuilders = {
 
 };
 
-_document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-	const components = Object.keys(componentBuilders).reduce((components, key) => {
-		components[key] = componentBuilders[key]();
-		return components;
-	}, {});
+	const components = Object.keys(componentBuilders)
+		.reduce((components, key) => (components[key] = componentBuilders[key](), components), {});
 
-	const run = (() => {
-		let on = false;
+	const drawingLoop = (() => {
+		let on;
+		let stepCount, globals;
 		const func = () => {
 			if (on) {
-				editorValues.draw(stepCount, globals, components.canv);
+				const drawFunc = editorValues['draw'];
+				drawFunc(stepCount ++, globals, components.canv);
 				setTimeout(func, 0);
 			}
 		};
-		return {
+		const drawingLoop = {
+			init: () => (stepCount = 0, globals = {}),
 			step: () => (on = true, func(), on = false),
 			start: () => (on = true, func()),
 			stop: () => on = false
 		};
+		drawingLoop.stop();
+		drawingLoop.init();
+		return drawingLoop;
 	})();
 
-	const randGenerate = () => components.editorgroup.editors['draw'].save(editorValues.rand(stringify));
+	const canvasFill = () => {
+		components.canv.fill(editorValues['conf']().clearingFill);
+	};
+
+	const randGenerate = () => components.editorgroup.editors['draw'].save(editorValues['rand'](stringify));
+
+	const actionReinit = () => {
+		const message = window.App.literals.actions.reinit.confirmMessage;
+		if (window.confirm(message)) {
+			drawingLoop.init();
+		}
+	};
+
+	const actionClear = () => {
+		const clearingFill = editorValues['conf']().clearingFill;
+		const colorStr = `{r: ${clearingFill.r.toString()}, g: ${clearingFill.g.toString()}, ` +
+			`b: ${clearingFill.b.toString()}, a: ${clearingFill.a.toString()}}`;
+		const message = window.App.literals.actions.clear.confirmMessage.replace('{{colorStr}}', colorStr);
+		if (window.confirm(message)) {
+			canvasFill();
+		}
+	};
+
+	const actionResize = () => {
+		const invalid = () => alert(window.App.literals.actions.resize.invalidMessage);
+		const size = components.canv.getSize()
+		const sizeStr = `${size.x}, ${size.y}`;
+		const message = window.App.literals.actions.resize.promptMessage.replace('{{sizeStr}}', sizeStr);
+		const def = sizeStr;
+		const promptResStr = window.prompt(message, def);
+		if (! promptResStr) {
+			invalid();
+		} else {
+			const newSizeArr = promptResStr.split(',').map((item) => item.trim()).map((item) => Number(item));
+			const newSize = {x: newSizeArr[0], y: newSizeArr[1]};
+			if (isNaN(newSize.x) || isNaN(newSize.y)) {
+				invalid();
+			} else {
+				drawingLoop.init();
+				components.canv.setSize(newSize);
+				canvasFill();
+			}
+		}
+	};
 
 	const stringify = (() => {
-		const recursive = (v, replaceInFuncs, tabLevel = 1) => {
-			if (typeof(v) === 'object') {
-				return `{\n${Object.keys(v).map((k) => `${new Array(tabLevel).fill('\t').join('')}${k}: ` +
-					`${recursive(v[k], replaceInFuncs, tabLevel + 1)}`).join(',\n')}\n${new Array(tabLevel - 1).fill('\t').join('')}}`;
-			} else {
-				let str = v.toString();
-				if (typeof(v) === 'function') {
-					Object.keys(replaceInFuncs).forEach((key) => {
-						str = str.replace(`/*-- ${key} --*/`, replaceInFuncs[key]);
-					});
-				}
-				return str;
-			}
-		};
+		const recursive = (v, replaceInFuncs, tabLevel = 1) =>
+			typeof(v) === 'object' ?
+				`{\n${Object.keys(v).map((k) => `${new Array(tabLevel).fill('\t').join('')}${k}: ` +
+					`${recursive(v[k], replaceInFuncs, tabLevel + 1)}`).join(',\n')}\n${new Array(tabLevel - 1).fill('\t').join('')}}` :
+				v.toString();
 		return (v, replaceInFuncs = {}) => `(${recursive(v, replaceInFuncs)})`;
 	})();
 
@@ -219,7 +262,7 @@ _document.addEventListener('DOMContentLoaded', () => {
 
 	Object.keys(components).forEach((key) => qsa(`[data-area-${key}]`)[0].appendChild(components[key]._root));
 
-	const controls = ['step', 'strt', 'stop', 'rand'].reduce((controls, name) => {
+	const controls = ['step', 'strt', 'stop', 'rand', 'rein', 'cler', 'resz'].reduce((controls, name) => {
 		controls[`_${name}`] = qsa(`[data-control="${name}"]`, qsa('[data-component-controls]')[0])[0];
 		return controls;
 	}, {});
@@ -229,10 +272,13 @@ _document.addEventListener('DOMContentLoaded', () => {
 		controls._stop.style.display = mode ? 'none': 'initial';
 	};
 
-	controls._step.addEventListener('click', (e) => run.step());
-	controls._strt.addEventListener('click', (e) => (setStrtStopControlMode(false), run.start()));
-	controls._stop.addEventListener('click', (e) => (setStrtStopControlMode(true), run.stop()));
-	controls._rand.addEventListener('click', randGenerate);
+	controls._step.addEventListener('click', (e) => drawingLoop.step());
+	controls._strt.addEventListener('click', (e) => (setStrtStopControlMode(false), drawingLoop.start()));
+	controls._stop.addEventListener('click', (e) => (setStrtStopControlMode(true), drawingLoop.stop()));
+	controls._rand.addEventListener('click', (e) => randGenerate());
+	controls._rein.addEventListener('click', (e) => actionReinit());
+	controls._cler.addEventListener('click', (e) => actionClear());
+	controls._resz.addEventListener('click', (e) => actionResize());
 
 	setStrtStopControlMode(true);
 
@@ -242,15 +288,16 @@ _document.addEventListener('DOMContentLoaded', () => {
 		return editorValues;
 	}, {});
 
-	let stepCount, globals;
+	components.editorgroup.editors['draw'].onSave.push((editor) => drawingLoop.init());
 
-	components.editorgroup.editors['draw'].onSave.push((editor) => {
-		stepCount = 0;
-		globals = {};
-	});
+	components.editorgroup.editors['conf'].onSave.push((editor) =>
+		Object.values(components.editorgroup.editors)
+			.forEach((editor) => editor.maxHistoryLength = editorValues['conf']().editorsMaxHistoryLength));
+
+	components.canv.setSize(window.App.config.initialCanvasSize);
 
 	window.App.init({
-		stringify, editors: components.editorgroup.editors, canv: components.canv, randGenerate
+		stringify, editors: components.editorgroup.editors, canv: components.canv, canvasFill, randGenerate
 	});
 
 });

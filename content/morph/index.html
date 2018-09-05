@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>Morph</title>
 		<link rel="stylesheet" type="text/css" href="./styles.css">
 		<script src="./script.js"></script>
+		<script src="./literals.js"></script>
+		<script src="./config.js"></script>
 		<script src="./init.js"></script>
 	</head>
 	<body>
@@ -13,12 +16,14 @@
 		</div>
 		<div class="area area-canv" data-area-canv></div>
 		<div class="area area-controls" data-area-controls>
-			<div data-component-controls class="component-controls">
-				<button class="component-controls-item" data-control="step" title="Perform one draw">Step</button>
-				<button class="component-controls-item" data-control="strt" title="Start drawing loop">Start</button>
-				<button class="component-controls-item" data-control="stop" title="Stop drawing loop">Stop</button>
-				<button class="component-controls-item" data-control="rand" title="Generate new drawing function">Random</button>
-				<button class="component-controls-item" data-control="resz" title="Resize the canvas">Resize</button>
+			<div data-component-controls class="componentControls">
+				<button class="componentControls-item" data-control="step" title="Perform one draw">Step</button>
+				<button class="componentControls-item" data-control="strt" title="Start drawing loop">Start</button>
+				<button class="componentControls-item" data-control="stop" title="Stop drawing loop">Stop</button>
+				<button class="componentControls-item" data-control="rand" title="Generate new drawing function">Random</button>
+				<button class="componentControls-item" data-control="rein" title="Reinitiate the drawing loop">Re-init</button>
+				<button class="componentControls-item" data-control="cler" title="Clear the canvas">Clear</button>
+				<button class="componentControls-item" data-control="resz" title="Resize the canvas">Resize</button>
 			</div>
 		</div>
 		<div class="area area-editorgroup" data-area-editorgroup></div>

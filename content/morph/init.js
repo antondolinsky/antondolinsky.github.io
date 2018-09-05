@@ -1,8 +1,6 @@
-const editorValueConf = {
-
-};
-
 const editorValueRand = (stringify) => {
+
+	/* This function will be called to randomly generate a new 'Draw' function. */
 
 	const randConfig = {
 
@@ -13,13 +11,15 @@ const editorValueRand = (stringify) => {
 			max: 40
 		},
 
+		startInstructions: ['const'],	/* there must be at least one instruction type in the array */
+
 		instructionChances: {
 			getData: 20,
 			putData: 20,
 			reference: 120,
 			const: 10,
 			copy: 10,
-			rand: 0,
+			rand: 2,
 			step: 25,
 			if: 50,
 			getAtPosR: 30,
@@ -42,27 +42,27 @@ const editorValueRand = (stringify) => {
 		instructionsDef: {
 			getData: (_, $) => {
 				if (! $.data.hasOwnProperty('permanentMemory')) {
-					$.data.permanentMemory = new Float32Array($.config.instructions.permanentMemory.num).fill(0);
+					$.data.permanentMemory = new Float32Array(_.config('permanentMemory.num')).fill(0);
 				}
 				_.output[0] = $.data.permanentMemory[Math.floor(((_.input[0] + 1) / 2) * $.data.permanentMemory.length)];
 			},
 			putData: (_, $) => {
 				if (! $.data.hasOwnProperty('permanentMemory')) {
-					$.data.permanentMemory = new Float32Array($.config.instructions.permanentMemory.num).fill(0);
+					$.data.permanentMemory = new Float32Array(_.config('permanentMemory.num')).fill(0);
 				}
-				if ((_.input[0] + 1) / 2 > $.config.instructions.permanentMemory.changeThreshold) {
+				if ((_.input[0] + 1) / 2 > _.config('permanentMemory.changeThreshold')) {
 					$.data.permanentMemory[Math.floor(((_.input[1] + 1) / 2) * $.data.permanentMemory.length)] = _.input[2];
 				}
 			},
 			reference: (_, $) => {
 				_.temp[0] = _.varBase;
-				_.temp[1] = _.temp[0] - $.config.instructions.reference.lookBehind;
+				_.temp[1] = _.temp[0] - _.config('reference.lookBehind');
 				_.temp[2] = _.temp[1] < 0 ? 0 : _.temp[1];
 				_.temp[3] = Math.floor(((_.input[0] + 1) / 2) * (_.temp[0] - _.temp[2])) + _.temp[2];
 				_.output[0] = $.v[_.temp[3]];
 			},
 			const: (_, $) => {
-				_.output[0] = Math.random() * 2 - 1;
+				_.output[0] = _.eval('#Math.random() * 2 - 1#');
 			},
 			copy: (_, $) => {
 				_.output[0] = _.input[0];
@@ -72,11 +72,11 @@ const editorValueRand = (stringify) => {
 			},
 			step: (_, $) => {
 				if (! $.data.hasOwnProperty('steps')) {
-					$.data.steps = new Array($.config.instructions.step.num).fill(null);
+					$.data.steps = new Array(_.config('step.num')).fill(null);
 				}
-				_.temp[0] = Math.floor(((_.input[0] + 1) / 2) * $.config.instructions.step.num);
-				if ($.data.steps[_.temp[0]] === null || _.input[0] > $.config.instructions.step.changeThreshold * 2 - 1) {
-					_.temp[1] = Math.max(Math.floor(((_.input[1] + 1) / 2) * $.config.instructions.step.multiplier), 1);
+				_.temp[0] = Math.floor(((_.input[0] + 1) / 2) * _.config('step.num'));
+				if ($.data.steps[_.temp[0]] === null || _.input[0] > _.config('step.changeThreshold') * 2 - 1) {
+					_.temp[1] = Math.max(Math.floor(((_.input[1] + 1) / 2) * _.config('step.multiplier')), 1);
 					data.steps[_.temp[0]] = {
 						length: _.temp[1],
 						phase: Math.floor(((_.input[2] + 1) / 2) * _.temp[1])
@@ -128,8 +128,8 @@ const editorValueRand = (stringify) => {
 				_.output[3] = $.d_o[_.temp[6] + 3] / 128 - 1;
 			},
 			getRelR: (_, $) => {
-				_.temp[0] = ($.r_x + 0.5 + _.input[0] * $.config.instructions.positionMultiplier) | 0;
-				_.temp[1] = ($.r_y + 0.5 + _.input[1] * $.config.instructions.positionMultiplier) | 0;
+				_.temp[0] = ($.r_x + 0.5 + _.input[0] * _.config('positionMultiplier')) | 0;
+				_.temp[1] = ($.r_y + 0.5 + _.input[1] * _.config('positionMultiplier')) | 0;
 				_.temp[2] = ((_.temp[0] % $.size.x) + $.size.x) % $.size.x;
 				_.temp[3] = ((_.temp[1] % $.size.y) + $.size.y) % $.size.y;
 				_.temp[4] = 4 * (_.temp[3] * $.size.x + _.temp[2]);
@@ -139,7 +139,7 @@ const editorValueRand = (stringify) => {
 				_.output[3] = $.d_o[_.temp[4] + 3] / 128 - 1;
 			},
 			getRelP: (_, $) => {
-				_.temp[0] = _.input[0] * $.config.instructions.positionMultiplier;
+				_.temp[0] = _.input[0] * _.config('positionMultiplier');
 				_.temp[1] = _.input[1] * Math.PI;
 				_.temp[2] = ($.r_x + 0.5 + _.temp[0] * Math.cos(_.temp[1])) | 0;
 				_.temp[3] = ($.r_y + 0.5 + _.temp[0] * Math.sin(_.temp[1])) | 0;
@@ -189,29 +189,23 @@ const editorValueRand = (stringify) => {
 			}
 		},
 
-		config: {
-			instructions: {
-				permanentMemory: {
-					num: 4,
-					changeThreshold: 0.8
-				},
-				reference: {
-					lookBehind: 10
-				},
-				step: {
-					num: 4,
-					multiplier: 1000,
-					changeThreshold: 0.8
-				},
-				positionMultiplier: 2
+		instructionConfig: {
+			permanentMemory: {
+				num: 4,
+				changeThreshold: 0.8
 			},
-			outColorWeights: {
-				r: 0.5,
-				g: 0.5,
-				b: 0.5,
-				a: 0
-			}
-		}
+			reference: {
+				lookBehind: 10
+			},
+			step: {
+				num: 4,
+				multiplier: 1000,
+				changeThreshold: 0.8
+			},
+			positionMultiplier: 2
+		},
+
+		outColorWeights: [0.5, 0.5, 0.5, 0]
 
 	};
 
@@ -232,6 +226,10 @@ const editorValueRand = (stringify) => {
 	};
 
 	const compiler = (() => {
+		const getByPath = (obj, path) => {
+			for (let i = 0; i < path.length; obj = obj[path[i]], i ++);
+			return obj;
+		};
 		const getUniqueMatches = (str, re) => {
 		  let matches = [], match;
 		  while (match = re.exec(str)) {
@@ -249,7 +247,7 @@ const editorValueRand = (stringify) => {
 			getUniqueMatches(getFuncBodyStr(func), (/_\.output\[([0-9]+)\]/g)).map(Number).sort((a, b) => a > b);
 		const tempMatches = (func) =>
 			getUniqueMatches(getFuncBodyStr(func), (/_\.temp\[([0-9]+)\]/g)).map(Number).sort((a, b) => a > b);
-		const compile = (func, inputArr, varBase, tempBase) => {
+		const compile = (func, inputArr, varBase, tempBase, config) => {
 			const funcBodyStr = getFuncBodyStr(func);
 			const replace0 = funcBodyStr.replace(/\$\./g, '');
 			const replace1 = inputMatches(func).reduce((soFar, curr) => {
@@ -261,8 +259,12 @@ const editorValueRand = (stringify) => {
 			const replace3 = outputMatches(func).reduce((soFar, curr) => {
 				return soFar.replace(new RegExp(`_\\.output\\[${curr}\\]`, 'g'), `v[${varBase + curr}]`);
 			}, replace2);
-			const replace4 = replace3.replace(/_\.varBase/g, varBase.toString());
-			const compiledStr = replace4;
+			const replace4 = replace3.replace(/_.config\('(.*?)'\)/g,
+				(match, p1) => getByPath(config, p1.split('.')).toString());
+			const replace5 = replace4.replace(/_.eval\('#(.*?)#'\)/g,
+				(match, p1) => eval(p1));
+			const replace6 = replace5.replace(/_\.varBase/g, varBase.toString());
+			const compiledStr = replace6;
 			return compiledStr;
 		};
 		return {inputMatches, outputMatches, tempMatches, compile};
@@ -272,7 +274,7 @@ const editorValueRand = (stringify) => {
 		Math.floor(Math.random() * (randConfig.instructionsNumRange.max - randConfig.instructionsNumRange.min)) +
 		randConfig.instructionsNumRange.min;
 	const instructionTypes = []
-		.concat(['const'])
+		.concat(randConfig.startInstructions)
 		.concat(new Array(instructionsNum - 1)
 			.fill(true)
 			.map((item) => getByChance(randConfig.instructionChances)));
@@ -288,48 +290,40 @@ const editorValueRand = (stringify) => {
 		const outputArr = new Array(outputCount)
 			.fill(true)
 			.map((item, index) => instructionsCtx.varCount + index);
-		const instructionStr = compiler.compile(func, inputArr, instructionsCtx.varCount, instructionsCtx.tempCount);
+		const instructionStr = compiler.compile(func, inputArr, instructionsCtx.varCount, instructionsCtx.tempCount, randConfig.instructionConfig);
 		instructionsCtx.varCount += outputCount, instructionsCtx.tempCount += tempCount;
 		instructionsCtx.instructionsStrs.push(instructionStr);
 		return instructionsCtx;
 	}, {varCount: 0, tempCount: 0, instructionsStrs: []});
 
-	const configStr = `globals.config = ${stringify(randConfig.config)};`;
 	const vDefStr = `globals.v = new Float64Array(${instructionsCtx.varCount});`;
 	const tDefStr = instructionsCtx.tempCount === 0 ?
 		'' :
 		`let ${new Array(instructionsCtx.tempCount).fill(true).map((item, index) => `t${index.toString()}`).join(', ')};`;
-	const instructionsStr = instructionsCtx.instructionsStrs
-		.map((str) => str.trim())
-		.map((str) => '\t\t\t' + str.split('\n').join('\n\t\t\t'))
-		.join('\n\n');
 	const writeStr = new Array(4).fill(true).map((item, index) =>
-		`d_n[di] = (d_o[di] * w_a_${index} + (v[${instructionsCtx.varCount - 4 + index}] + 1) * 128 * w_o_${index}) | 0; di ++;`
+		`d_n[di] = (d_o[di] * ${1 - randConfig.outColorWeights[index].toString()} + ` +
+		`(v[${instructionsCtx.varCount - 4 + index}] + 1) * 128 * ${randConfig.outColorWeights[index].toString()}) | 0; di ++;`
 		).join('\n');
 
 	return stringify((stepCount, globals, canv) => {
 
+		/* This function will be called on each iteration ('step') of the drawing loop */
+
 		if (stepCount === 0) {
-			globals.data = {};
-			/*-- configStr --*/
+			globals.d_n = canv.buildEmptyData();
 			globals.size = canv.getSize();
 			globals.sizeMax = Math.max(globals.size.x, globals.size.y);
-			globals.d_o = canv.getData();
-			globals.d_n = canv.buildEmptyData();
-			const outColorWeights = globals.config.outColorWeights;
-			const w_o = new Float32Array([outColorWeights.r, outColorWeights.g, outColorWeights.b, outColorWeights.a]);
-			globals.w_o = w_o;
-			globals.w_a = new Float32Array([1 - w_o[0], 1 - w_o[1], 1 - w_o[2], 1 - w_o[3]]);
+			globals.data = {};
 			/*-- vDefStr --*/
 		}
 
 		/*-- tDefStr --*/
 
-		const {data, config, size, sizeMax, d_o, d_n, w_o, w_a, v} = globals;
+		const d_o = canv.getData();
+
+		const {data, size, sizeMax, d_n, v} = globals;
 
 		let di = 0;
-		let w_a_0 = w_a[0], w_a_1 = w_a[1], w_a_2 = w_a[2], w_a_3 = w_a[3];
-		let w_o_0 = w_o[0], w_o_1 = w_o[1], w_o_2 = w_o[2], w_o_3 = w_o[3];
 
 		for (let r_y = 0; r_y < size.y; r_y ++) { for (let r_x = 0; r_x < size.x; r_x ++) {
 
@@ -347,23 +341,44 @@ const editorValueRand = (stringify) => {
 
 		canv.putData(d_n);
 
-	}, {
-		configStr,
-		vDefStr,
-		tDefStr,
-		instructionsStr,
-		writeStr
-	});
+	})
+		.replace(/\/\*-- vDefStr --\*\//, vDefStr)
+		.replace(/\/\*-- tDefStr --\*\//, tDefStr)
+		.replace(/\t\t\t\/\*-- instructionsStr --\*\//,
+			instructionsCtx.instructionsStrs
+				.map((item) => item.split('\n').filter((item) => item.trim() !== '').join('\n')).join('\n\n')
+				.split('\n').map((item) => item.substr(1)).join('\n'))
+		.replace(/\t\t\t\/\*-- writeStr --\*\//, writeStr.split('\n').map((item) => `\t\t\t${item}`).join('\n'));
 
 };
 
-const init = ({stringify, editors, canv, randGenerate}) => {
+const editorValueConf = (() => {
 
-	canv.setSize({x: 400, y: 400});
-	canv.fill([255, 255, 255, 255]);
+	/* This function should return an object of app configuration options -
+		{
+			clearingFill: <color used to fill the canvas on a 'Clear',
+			editorsMaxHistoryLength: maximum length that the editors ('Draw', 'Rand', and 'Conf' keep their history for)
+		}
+	*/
+
+	return {
+		clearingFill: {
+			r: 255,
+			g: 255,
+			b: 255,
+			a: 255
+		},
+		editorsMaxHistoryLength: Infinity
+	};
+
+});
+
+const init = ({stringify, editors, canv, canvasFill, randGenerate}) => {
 
 	editors['rand'].save(stringify(editorValueRand));
 	editors['conf'].save(stringify(editorValueConf));
+
+	canvasFill();
 
 	randGenerate();
 
