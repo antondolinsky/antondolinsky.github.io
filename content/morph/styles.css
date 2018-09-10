@@ -15,25 +15,26 @@ body {
 	border: 1px solid #000;
 }
 
-.componentControls > .componentControls-item {
-	width: 60px;
+.componentCtrl > .componentCtrl-button {
+	width: 61px;
+	font-size: 11px;
 	cursor: pointer;
 }
 
-.componentEditorgroup {
+.componentEdit {
 	position: relative;
 	margin: 0 auto;
 	width: 800px;
 	height: 400px;
 }
 
-.componentEditorgroup > .componentEditorgroup-tabs {
+.componentEdit > .componentEdit-tabs {
 	position: absolute;
 	left: 0;
 	top: 0;
 }
 
-.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab {
+.componentEdit > .componentEdit-tabs > .componentEdit-tabs-tab {
 	display: inline-block;
 	position: relative;
 	width: 40px;
@@ -45,11 +46,11 @@ body {
 	cursor: pointer;
 }
 
-.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab.top {
+.componentEdit > .componentEdit-tabs > .componentEdit-tabs-tab.top {
 	background-color: #fff;
 }
 
-.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab.top:after {
+.componentEdit > .componentEdit-tabs > .componentEdit-tabs-tab.top:after {
 	content: '';
   position: absolute;
   left: 0;
@@ -59,26 +60,27 @@ body {
   width: 40px;
 }
 
-.componentEditorgroup > .componentEditorgroup-tabs > .componentEditorgroup-tabs-tab > .componentEditorgroup-tabs-tab-link {
+.componentEdit > .componentEdit-tabs > .componentEdit-tabs-tab > .componentEdit-tabs-tab-link {
 	text-decoration: none;
 	color: #000;
 }
 
-.componentEditorgroup > .componentEditorgroup-controls {
+.componentEdit > .componentEdit-controls {
 	position: absolute;
 	right: -2px;
 	top: 0;
 }
 
-.componentEditorgroup > .componentEditorgroup-controls > .componentEditorgroup-controls-item {
+.componentEdit > .componentEdit-controls > .componentEdit-controls-item {
+	width: 40px;
 	cursor: pointer;
 }
 
-.componentEditorgroup > .componentEditorgroup-editors {
+.componentEdit > .componentEdit-editors {
 	padding-top: 21px;
 }
 
-.componentEditorgroup > .componentEditorgroup-editors > .componentEditorgroup-editors-editor {
+.componentEdit > .componentEdit-editors > .componentEdit-editors-editor {
 	display: none;
 	width: 800px;
 	height: 400px;
@@ -90,6 +92,6 @@ body {
 	tab-size: 4;
 }
 
-.componentEditorgroup > .componentEditorgroup-editors > .componentEditorgroup-editors-editor.top {
+.componentEdit > .componentEdit-editors > .componentEdit-editors-editor.top {
 	display: block;
 }

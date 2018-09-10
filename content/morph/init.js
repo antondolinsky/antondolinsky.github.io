@@ -11,7 +11,7 @@ const editorValueRand = (stringify) => {
 			max: 40
 		},
 
-		startInstructions: ['random'],	/* there must be at least one instruction type in the array */
+		startInstructions: ['constant'],	/* there must be at least one instruction type in the array */
 
 		instructionChances: {
 			getData: 20,
@@ -19,7 +19,7 @@ const editorValueRand = (stringify) => {
 			reference: 120,
 			constant: 10,
 			copy: 10,
-			random: 0,
+			random: 5,
 			step: 25,
 			conditional: 50,
 			getPositionRectangular: 30,
@@ -356,8 +356,13 @@ const editorValueConf = (() => {
 
 	/* This function should return an object of app configuration options -
 		{
-			clearingFill: <color used to fill the canvas on a 'Clear',
-			editorsMaxHistoryLength: maximum length that the editors ('Draw', 'Rand', and 'Conf' keep their history for)
+			clearingFill: <color used to fill the canvas on a 'Clear'>,
+			editorsMaxHistoryLength: <maximum length that the editors ('Draw', 'Rand', and 'Conf' keep their history for)>
+			autoRandInterval: { <when 'Auto' is on, this min-max range will be repeatedly used to randomly pick numbers of steps
+					after which to randomize the drawing loop>
+				min: <minimum of auto-randomization range>,
+				max: <maximum of auto-randomization range>
+			}
 		}
 	*/
 
@@ -368,15 +373,19 @@ const editorValueConf = (() => {
 			b: 255,
 			a: 255
 		},
-		editorsMaxHistoryLength: Infinity
+		editorsMaxHistoryLength: Infinity,
+		autoRandInterval: {
+			min: 4,
+			max: 40
+		}
 	};
 
 });
 
 const init = ({stringify, editors, canv, canvasFill, randGenerate}) => {
 
-	editors['rand'].save(stringify(editorValueRand));
-	editors['conf'].save(stringify(editorValueConf));
+	editors['rand'].set(stringify(editorValueRand));
+	editors['conf'].set(stringify(editorValueConf));
 
 	canvasFill();
 
