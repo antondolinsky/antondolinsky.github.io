@@ -1,31 +1,18 @@
-body {
-	background-color: #fff;
-}
-
-.area {
-	text-align: center;
-}
-
-.area.area-top {
-	font-size: 12px;
-	margin-bottom: 8px;
-}
+/* component styles */
 
 .componentCanv > .componentCanv-canvas {
 	border: 1px solid #000;
 }
 
 .componentCtrl > .componentCtrl-button {
-	width: 61px;
+	width: 72px;
 	font-size: 11px;
 	cursor: pointer;
 }
 
 .componentEdit {
+	display: inline-block;
 	position: relative;
-	margin: 0 auto;
-	width: 800px;
-	height: 400px;
 }
 
 .componentEdit > .componentEdit-tabs {
@@ -76,22 +63,35 @@ body {
 	cursor: pointer;
 }
 
-.componentEdit > .componentEdit-editors {
-	padding-top: 21px;
-}
-
-.componentEdit > .componentEdit-editors > .componentEdit-editors-editor {
-	display: none;
+.componentEdit > .componentEdit-editor {
+	margin-top: 21px;
 	width: 800px;
 	height: 400px;
-	padding: 0;
 	border: 1px solid #000;
-	resize: none;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
 	tab-size: 4;
+	outline: 0;
 }
 
-.componentEdit > .componentEdit-editors > .componentEdit-editors-editor.top {
-	display: block;
+
+
+
+/* other styles */
+
+body {
+	background-color: #fff;
+}
+
+.area {
+	text-align: center;
+}
+
+.area.area-top {
+	font-size: 12px;
+	margin-bottom: 8px;
+}
+
+canvas.mousetracking {
+	cursor: crosshair;
 }
