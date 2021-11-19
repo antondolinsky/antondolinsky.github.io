@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
     options.useMap = new Array(options.width);
     for (let i = 0; i < options.width; i += 1) {
       if (Math.random() < options.tChance) {
-        options.useMap[i] = `t${Math.floor(Math.random() * options.tCount))}`;
+        options.useMap[i] = `ts[${Math.floor(Math.random() * options.tCount)}]`;
       } else {
         options.useMap[i] = ['x', 'y'][Math.floor(Math.random() * 2)];
       }
@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const setParams = new URLSearchParams();
   baseNames.forEach((name) => setParams.append(name, options[name]));
-  arrayNames.forEach((name) => setParams.append(name, `[${options.ts.map((t) => t.toString()).join(',')}]`);
+  arrayNames.forEach((name) => setParams.append(name, `[${options[name].map((t) => t.toString()).join(',')}]`));
   const queryStr = setParams.toString();
 
   const k = new Function('ts', `
