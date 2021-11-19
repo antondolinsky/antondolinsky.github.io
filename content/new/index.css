@@ -1,3 +1,7 @@
+body {
+	background-color: Black;
+}
+
 canvas {
 	display: block;
 	margin: auto;
