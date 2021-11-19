@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const params = new URLSearchParams(window.location.search);
 
-  const baseNames = ['canvSize', 'depth', 'width', 'tCount', 'tChance' 'step'];
+  const baseNames = ['canvSize', 'depth', 'width', 'tCount', 'tChance', 'step'];
   const arrayNames = ['ts', 'useMap', 'f'];
 
   baseNames.forEach((name) => {
