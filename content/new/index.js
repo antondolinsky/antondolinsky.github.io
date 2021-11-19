@@ -4,8 +4,10 @@ window.addEventListener('DOMContentLoaded', () => {
     depth: 32,
     width: 16,
     tCount: 2,
+    tChance: 0.5,
     step: 0.001,
     ts: null,
+    useMap: null,
     f: null
   };
 
@@ -13,7 +15,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const params = new URLSearchParams(window.location.search);
 
-  ['canvSize', 'depth', 'width', 'tCount', 'step'].forEach((name) => {
+  const baseNames = ['canvSize', 'depth', 'width', 'tCount', 'tChance' 'step'];
+  const arrayNames = ['ts', 'useMap', 'f'];
+
+  baseNames.forEach((name) => {
     if (params.has(name)) {
       options[name] = Number(params.get(name));
     }
@@ -21,8 +26,22 @@ window.addEventListener('DOMContentLoaded', () => {
   if (params.has('ts')) {
     const paramStr = params.get('ts');
     options.ts = paramStr.substring(1, paramStr.length - 1).split(',').map((item) => Number(item));
+    options.tCount = options.ts.length;
   } else {
     options.ts = new Array(options.tCount).fill(true).map(() => Math.random() * 2 - 1);
+  }
+  if (params.has('useMap')) {
+    const paramStr = params.get('useMap');
+    options.useMap = paramStr.substring(1, paramStr.length - 1).split(',');
+  } else {
+    options.useMap = new Array(options.width);
+    for (let i = 0; i < options.width; i += 1) {
+      if (Math.random() < options.tChance) {
+        options.useMap[i] = `t${Math.floor(Math.random() * options.tCount))}`;
+      } else {
+        options.useMap[i] = ['x', 'y'][Math.floor(Math.random() * 2)];
+      }
+    }
   }
   if (params.has('f')) {
     const paramStr = params.get('f');
@@ -31,14 +50,11 @@ window.addEventListener('DOMContentLoaded', () => {
     options.f = new Float32Array(options.depth * options.width * (options.width + 1)).map(() => Math.random() * 2 - 1);
   }
 
-  const { canvSize, depth, width, tCount, step, ts, f } = options;
+  const { canvSize, depth, width, tCount, step, ts, useMap, f } = options;
 
   const setParams = new URLSearchParams();
-  ['canvSize', 'depth', 'width', 'tCount', 'step'].forEach((name) => {
-    setParams.append(name, options[name]);
-  });
-  setParams.append('ts', `[${options.ts.map((t) => t.toString()).join(',')}]`);
-  setParams.append('f', `[${options.f.map((v) => v.toString()).join(',')}]`);
+  baseNames.forEach((name) => setParams.append(name, options[name]));
+  arrayNames.forEach((name) => setParams.append(name, `[${options.ts.map((t) => t.toString()).join(',')}]`);
   const queryStr = setParams.toString();
 
   const k = new Function('ts', `
@@ -49,7 +65,7 @@ let y = (this.thread.y / this.output.y) * 2 - 1;
 ${new Array(f.length).fill(true).map((e, fIndex) => `let f${fIndex} = ${f[fIndex]};`).join('')}
 ${new Array(width).fill(true).map((e, iIndex) => `let i${iIndex} = 0;`).join('')}
 ${new Array(width).fill(true).map((e, oIndex) => `let o${oIndex} = 0;`).join('')}
-${new Array(width).fill(true).map((e, iIndex) => `i${iIndex} = ${(['x', 'y'].concat(new Array(tCount).fill(true).map((e, tIndex) => `ts[${tIndex}]`)))[iIndex % (2 + tCount)]};`).join('')}
+${new Array(width).fill(true).map((e, iIndex) => `i${iIndex} = ${useMap[iIndex]};`).join('')}
 ${new Array(depth).fill(true).map((e, lIndex) =>
   `${new Array(width).fill(true).map((e, oIndex) =>
     `o${oIndex} = Math.tanh(${new Array(width).fill(true).map((e, iIndex) =>
