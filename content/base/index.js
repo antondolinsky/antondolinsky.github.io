@@ -1,3 +1,11 @@
+const rafWrap = (cb, args) => {
+  const go = () => {
+    args = cb(args);
+    window.requestAnimationFrame(go);
+  };
+  window.requestAnimationFrame(go);
+};
+
 window.addEventListener('DOMContentLoaded', () => {
   const defaults = {
     canvSize: 600,
@@ -32,16 +40,13 @@ this.color((o0 + 1) / 2, (o1 + 1) / 2, (o2 + 1) / 2, 1);
 
   const gpu = new GPU();
 
-  const render = gpu.createKernel(kernelSource)
+  const kernel = gpu.createKernel(kernelSource)
     .setOutput([options.canvSize, options.canvSize])
     .setGraphical(true);
 
-  const go = (tFuncs) => {
-    render();
+  rafWrap(() => {
+    kernel();
     document.body.firstChild && document.body.firstChild.remove();
-    document.body.appendChild(render.canvas);
-    window.requestAnimationFrame(() => go());
-  };
-
-  window.requestAnimationFrame(() => go());
+    document.body.appendChild(kernel.canvas);
+  });
 });
