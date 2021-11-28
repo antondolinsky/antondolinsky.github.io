@@ -19,8 +19,6 @@ window.addEventListener('DOMContentLoaded', () => {
   options.f = new Float32Array(options.depth * options.width * (options.width + 1)).map(() => Math.random() * 2 - 1);
 
   const kernelSource = new Function('pixels', `
-let depth = ${options.depth};
-let width = ${options.width};
 let x = (this.thread.x / this.output.x) * 2 - 1;
 let y = (this.thread.y / this.output.y) * 2 - 1;
 ${new Array(options.f.length).fill(true).map((e, fIndex) => `let f${fIndex} = ${options.f[fIndex]};`).join('')}
