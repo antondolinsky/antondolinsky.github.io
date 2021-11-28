@@ -31,7 +31,7 @@ ${new Array(options.depth).fill(true).map((e, lIndex) =>
       `i${iIndex} * f${lIndex * options.width * (options.width + 1) + oIndex * (options.width + 1) + iIndex}`).join(' + ')} + f${lIndex * options.width * (options.width + 1) + oIndex * (options.width + 1) + options.width});`
   ).join('\n')}
 ${new Array(options.width).fill(true).map((e, index) => `i${index} = o${index};`).join('')}`
-).join('')}
+).join('\n')}
 this.color((o0 + 1) / 2, (o1 + 1) / 2, (o2 + 1) / 2, 1);
   `);
 
