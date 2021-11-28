@@ -8,16 +8,17 @@ const rafWrap = (cb, args) => {
 
 window.addEventListener('DOMContentLoaded', () => {
   const defaults = {
-    canvSize: 600,
-    depth: 32,
-    width: 16
+    canvSize: 400,
+    depth: 2,
+    width: 8,
+    keep: 4
   };
 
   const options = { ...defaults };
 
   options.f = new Float32Array(options.depth * options.width * (options.width + 1)).map(() => Math.random() * 2 - 1);
 
-  const kernelSource = new Function(`
+  const kernelSource = new Function('pixels', `
 let depth = ${options.depth};
 let width = ${options.width};
 let x = (this.thread.x / this.output.x) * 2 - 1;
@@ -44,8 +45,12 @@ this.color((o0 + 1) / 2, (o1 + 1) / 2, (o2 + 1) / 2, 1);
     .setOutput([options.canvSize, options.canvSize])
     .setGraphical(true);
 
+  let pixels = new Array(options.keep).fill(true).map(() => new Uint8ClampedArray(options.canvSize ** 2 * 4));
+
   rafWrap(() => {
-    kernel();
+    kernel(pixels);
+    pixels.shift();
+    pixels.push(kernel.getPixels());
     document.body.firstChild && document.body.firstChild.remove();
     document.body.appendChild(kernel.canvas);
   });
